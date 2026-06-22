@@ -159,6 +159,12 @@ class c_profile extends Controller
                             'updated_at' => now(),
                         ]
                     );
+
+                    if (!empty($area['postal_code'])) {
+                        DB::table('desas')->where('id', $desaId)->update([
+                            'kodePos' => $area['postal_code']
+                        ]);
+                    }
                 }
             }
         } catch (\Exception $e) {

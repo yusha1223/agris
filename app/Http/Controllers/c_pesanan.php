@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\OrderStatusUpdated;
 use App\Models\Desa;
 use App\Models\DetailPesanan;
+use App\Models\Kecamatan;
+use App\Models\Kabupaten;
+use App\Models\Provinsi;
 use App\Models\Keranjang;
 use App\Models\Pembayaran;
 use App\Models\Pesanan;
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class c_pesanan extends Controller
 {
@@ -87,7 +91,6 @@ class c_pesanan extends Controller
 
         $pesanans = $query->orderBy('created_at', 'desc')->get();
 
-        // Fetch Biteship tracking status for each 'dikirim' order
         $biteshipStatuses = [];
         foreach ($pesanans as $p) {
             if ($p->status_pesanan === 'dikirim') {
@@ -270,31 +273,7 @@ class c_pesanan extends Controller
             Log::error('Biteship Cek Ongkir Error: '.$e->getMessage());
         }
 
-        $fallbackRates = [
-            [
-                'courier_name' => 'JNE',
-                'courier_service_code' => 'reg',
-                'courier_service_name' => 'REG',
-                'price' => round(12000 * $weightKg),
-                'duration' => '2-3 Hari',
-            ],
-            [
-                'courier_name' => 'SiCepat',
-                'courier_service_code' => 'gokil',
-                'courier_service_name' => 'GOKIL',
-                'price' => round(9000 * $weightKg),
-                'duration' => '3-5 Hari',
-            ],
-            [
-                'courier_name' => 'J&T',
-                'courier_service_code' => 'ez',
-                'courier_service_name' => 'EZ',
-                'price' => round(11000 * $weightKg),
-                'duration' => '2-4 Hari',
-            ],
-        ];
-
-        return response()->json($fallbackRates);
+        return response()->json(['success' => false, 'message' => 'Gagal mendapatkan tarif pengiriman dari Biteship.'], 500);
     }
 
     public function checkoutStore(Request $request)
@@ -378,7 +357,7 @@ class c_pesanan extends Controller
             }
 
             if ($shippingCost === 0) {
-                $shippingCost = $request->shipping_cost;
+                return response()->json(['success' => false, 'message' => 'Gagal memverifikasi tarif pengiriman dari Biteship.'], 422);
             }
         }
 
@@ -452,7 +431,11 @@ class c_pesanan extends Controller
             }
 
             if (! $snapToken) {
-                throw new \Exception('Gagal terhubung dengan server Midtrans. Pastikan Server Key dan Client Key Sandbox di file .env Anda sudah terkonfigurasi dengan benar.');
+                if (config('app.env') === 'local' || empty($serverKey)) {
+                    $snapToken = 'MOCK-SNAP-TOKEN-'.Str::random(10);
+                } else {
+                    throw new \Exception('Gagal terhubung dengan server Midtrans. Pastikan Server Key dan Client Key Sandbox di file .env Anda sudah terkonfigurasi dengan benar.');
+                }
             }
 
             Pembayaran::create([
@@ -486,6 +469,39 @@ class c_pesanan extends Controller
         }
     }
 
+    private function syncWilayah(string $desaId)
+    {
+        try {
+            $parts = explode('.', $desaId);
+            if (count($parts) !== 4) return;
+
+            $provId = $parts[0];
+            $kabId = $parts[0] . '.' . $parts[1];
+            $kecId = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
+
+            $resProv = Http::get("https://wilayah.id/api/provinces.json")->json()['data'] ?? [];
+            $provName = collect($resProv)->firstWhere('code', $provId)['name'] ?? '';
+
+            $resKab = Http::get("https://wilayah.id/api/regencies/{$provId}.json")->json()['data'] ?? [];
+            $kabName = collect($resKab)->firstWhere('code', $kabId)['name'] ?? '';
+
+            $resKec = Http::get("https://wilayah.id/api/districts/{$kabId}.json")->json()['data'] ?? [];
+            $kecName = collect($resKec)->firstWhere('code', $kecId)['name'] ?? '';
+
+            $resDesa = Http::get("https://wilayah.id/api/villages/{$kecId}.json")->json()['data'] ?? [];
+            $desaName = collect($resDesa)->firstWhere('code', $desaId)['name'] ?? '';
+
+            if ($provName && $kabName && $kecName && $desaName) {
+                Provinsi::updateOrCreate(['id' => $provId], ['namaProvinsi' => $provName]);
+                Kabupaten::updateOrCreate(['id' => $kabId], ['provinsiId' => $provId, 'namaKabupaten' => $kabName]);
+                Kecamatan::updateOrCreate(['id' => $kecId], ['kabupatenId' => $kabId, 'namaKecamatan' => $kecName]);
+                Desa::updateOrCreate(['id' => $desaId], ['kecamatanId' => $kecId, 'namaDesa' => $desaName]);
+            }
+        } catch (\Exception $e) {
+            Log::error("Sync Wilayah Gagal di Pesanan: " . $e->getMessage());
+        }
+    }
+
     private function getOrCreateBiteshipArea(string $desaId)
     {
         $area = DB::table('biteship_areas')->where('desaId', $desaId)->first();
@@ -494,6 +510,11 @@ class c_pesanan extends Controller
         }
 
         $desa = Desa::with('kecamatan')->find($desaId);
+        if (! $desa || ! $desa->kecamatan) {
+            $this->syncWilayah($desaId);
+            $desa = Desa::with('kecamatan')->find($desaId);
+        }
+
         if (! $desa || ! $desa->kecamatan) {
             return null;
         }
@@ -526,6 +547,12 @@ class c_pesanan extends Controller
                         ]
                     );
 
+                    if (!empty($areaData['postal_code'])) {
+                        DB::table('desas')->where('id', $desaId)->update([
+                            'kodePos' => $areaData['postal_code']
+                        ]);
+                    }
+
                     return $areaData['id'];
                 }
             }
@@ -552,14 +579,65 @@ class c_pesanan extends Controller
             event(new OrderStatusUpdated($pesanan));
 
             $pembayaran = $pesanan->pembayaran;
-            $hasPaid = $pembayaran && $pembayaran->statusPembayaran === 'berhasil';
-
             if ($pembayaran) {
-                if (!$hasPaid) {
-                    Pembayaran::whereId($pembayaran->id)->update([
-                        'statusPembayaran' => 'gagal',
-                    ]);
+                $hasPaid = $pembayaran->statusPembayaran === 'berhasil';
+
+                $serverKey = config('services.midtrans.server_key');
+                if (! empty($serverKey) && $pembayaran->snapToken && ! str_starts_with($pembayaran->snapToken, 'MOCK-SNAP-TOKEN-')) {
+                    $isProduction = config('services.midtrans.is_production', false);
+                    try {
+                        $statusUrl = $isProduction
+                            ? "https://api.midtrans.com/v2/{$pesanan->id}/status"
+                            : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/status";
+
+                        $statusResponse = Http::withBasicAuth($serverKey, '')
+                            ->timeout(10)
+                            ->get($statusUrl);
+
+                        $transactionStatus = null;
+                        if ($statusResponse->successful()) {
+                            $transactionStatus = $statusResponse->json()['transaction_status'] ?? null;
+                        }
+
+                        if ($transactionStatus === 'settlement') {
+                            $refundUrl = $isProduction
+                                ? "https://api.midtrans.com/v2/{$pesanan->id}/refund"
+                                : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/refund";
+
+                            $refundResponse = Http::withBasicAuth($serverKey, '')
+                                ->asJson()
+                                ->acceptJson()
+                                ->timeout(10)
+                                ->post($refundUrl, [
+                                    'refund_key' => 'REF-'.$pesanan->id.'-'.time(),
+                                    'amount' => (int) $pembayaran->totalPembayaran,
+                                    'reason' => 'Pesanan dibatalkan oleh Agen',
+                                ]);
+
+                            Log::info('Midtrans Refund Response for order '.$pesanan->id.': '.$refundResponse->body());
+                        } else if (in_array($transactionStatus, ['capture', 'pending', 'challenge'])) {
+                            $cancelUrl = $isProduction
+                                ? "https://api.midtrans.com/v2/{$pesanan->id}/cancel"
+                                : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/cancel";
+
+                            $cancelResponse = Http::withBasicAuth($serverKey, '')
+                                ->asJson()
+                                ->acceptJson()
+                                ->timeout(10)
+                                ->post($cancelUrl);
+
+                            Log::info('Midtrans Cancel Response for order '.$pesanan->id.': '.$cancelResponse->body());
+                        } else {
+                            Log::warning('Midtrans transaction status is ' . ($transactionStatus ?? 'null') . ', skipping refund/cancel call.');
+                        }
+                    } catch (\Exception $me) {
+                        Log::error('Midtrans Refund/Cancel Exception for order '.$pesanan->id.': '.$me->getMessage());
+                    }
                 }
+
+                Pembayaran::whereId($pembayaran->id)->update([
+                    'statusPembayaran' => 'gagal',
+                ]);
             }
 
             foreach ($pesanan->detailPesanans as $detail) {
@@ -601,10 +679,14 @@ class c_pesanan extends Controller
         $trackId = $biteshipOrderId ?: $noResi;
 
         if ($trackId && ! str_contains(strtoupper($trackId), 'AMBIL')) {
-            return redirect("https://track-sandbox.biteship.com/{$trackId}");
+            $isBiteshipTesting = empty(config('services.biteship.key')) || str_starts_with(config('services.biteship.key'), 'biteship_test.') || config('app.env') === 'local';
+            if ($isBiteshipTesting) {
+                return redirect('https://track.biteship.com/tracking-test');
+            }
+
+            return redirect("https://track.biteship.com/{$trackId}");
         }
 
-        return redirect()->route('guest.track', ['q' => $id]);
     }
 
     public function markDiterima(string $id)
@@ -621,7 +703,6 @@ class c_pesanan extends Controller
             ]);
             event(new OrderStatusUpdated($pesanan));
 
-            // Sync status to Biteship as delivered
             $this->syncBiteshipStatus($pesanan, 'delivered');
 
             return redirect()->back()->with('success', 'Terima kasih! Pesanan Anda telah ditandai sebagai selesai.');
@@ -703,7 +784,7 @@ class c_pesanan extends Controller
 
     public function adminAction(Request $request, string $id)
     {
-        $pesanan = Pesanan::findOrFail($id);
+        $pesanan = Pesanan::with(['user.desa.kecamatan', 'desa.kecamatan'])->findOrFail($id);
         $action = $request->input('action');
 
         DB::beginTransaction();
@@ -717,7 +798,7 @@ class c_pesanan extends Controller
                         'waktuDibayar' => now(),
                     ]);
                 }
-                $msg = 'Pesanan berhasil diproses dan dikemas.';
+                $msg = 'Pesanan berhasil diproses and dikemas.';
             } elseif ($action === 'kirim') {
                 $noResi = null;
                 $biteshipOrderId = null;
@@ -745,16 +826,33 @@ class c_pesanan extends Controller
 
                     $admin = User::with('desa.kecamatan.kabupaten.provinsi')->isAdmin(true)->first();
                     $originAreaId = null;
+                    $originPostalCode = null;
                     if ($admin && $admin->desaId) {
                         $originAreaId = $this->getOrCreateBiteshipArea($admin->desaId);
+                        $admin->load('desa');
+                        $originPostalCode = $admin->desa?->kodePos;
                     }
                     if (! $originAreaId) {
                         $originAreaId = 'IDNP6IDNC148IDND843IDZ12250';
                     }
+                    if (! $originPostalCode) {
+                        $originPostalCode = '68111';
+                    }
 
                     $destinationAreaId = null;
+                    $destinationPostalCode = null;
                     if ($pesanan->desaId) {
                         $destinationAreaId = $this->getOrCreateBiteshipArea($pesanan->desaId);
+                        $pesanan->load('desa');
+                        $destinationPostalCode = $pesanan->desa?->kodePos;
+                    }
+                    if (! $destinationPostalCode && $pesanan->user && $pesanan->user->desaId) {
+                        $this->getOrCreateBiteshipArea($pesanan->user->desaId);
+                        $pesanan->user->load('desa');
+                        $destinationPostalCode = $pesanan->user->desa?->kodePos;
+                    }
+                    if (! $destinationPostalCode) {
+                        $destinationPostalCode = '68111';
                     }
 
                     $items = [];
@@ -794,11 +892,13 @@ class c_pesanan extends Controller
                                 'origin_contact_phone' => $admin->noTelp ?? '081234567890',
                                 'origin_address' => $admin->alamatLengkap ?: 'Kawasan Bisnis Agris, Jl. Manyar Gg. Kelapa, Puring, Slawu, Patrang, Jember, Jawa Timur',
                                 'origin_area_id' => $originAreaId,
+                                'origin_postal_code' => (int) $originPostalCode,
                                 'destination_contact_name' => $pesanan->user->namaLengkap,
                                 'destination_contact_phone' => $pesanan->user->noTelp,
                                 'destination_contact_email' => $pesanan->user->email,
                                 'destination_address' => $pesanan->alamat_pengiriman,
                                 'destination_area_id' => $destinationAreaId,
+                                'destination_postal_code' => (int) $destinationPostalCode,
                                 'courier_company' => $courierCompany,
                                 'courier_type' => $courierService,
                                 'courier_service' => $courierService,
@@ -816,12 +916,14 @@ class c_pesanan extends Controller
                             $errorMsg = $response->json()['error'] ?? 'Gagal membuat pesanan di Biteship.';
                             Log::error('Biteship Order Creation Failed: '.$response->body());
                             DB::rollBack();
-                            return redirect()->back()->with('error', 'Gagal membuat pesanan Biteship: ' . $errorMsg);
+
+                            return redirect()->back()->with('error', 'Gagal membuat pesanan Biteship: '.$errorMsg);
                         }
                     } catch (\Exception $e) {
                         Log::error('Biteship Order Creation Exception: '.$e->getMessage());
                         DB::rollBack();
-                        return redirect()->back()->with('error', 'Gagal menghubungi server Biteship: ' . $e->getMessage());
+
+                        return redirect()->back()->with('error', 'Gagal menghubungi server Biteship: '.$e->getMessage());
                     }
                 }
 
@@ -852,12 +954,64 @@ class c_pesanan extends Controller
                 $msg = 'Pesanan berhasil ditandai sebagai selesai.';
             } elseif ($action === 'batal') {
                 Pesanan::whereId($pesanan->id)->update(['status_pesanan' => 'dibatalkan']);
+                $pesanan->refresh();
                 event(new OrderStatusUpdated($pesanan));
 
                 $pembayaran = $pesanan->pembayaran;
-                $hasPaid = $pembayaran && $pembayaran->statusPembayaran === 'berhasil';
+                if ($pembayaran) {
+                    $serverKey = config('services.midtrans.server_key');
+                    if (! empty($serverKey) && $pembayaran->snapToken && ! str_starts_with($pembayaran->snapToken, 'MOCK-SNAP-TOKEN-')) {
+                        $isProduction = config('services.midtrans.is_production', false);
+                        try {
+                            $statusUrl = $isProduction
+                                ? "https://api.midtrans.com/v2/{$pesanan->id}/status"
+                                : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/status";
 
-                if ($pembayaran && !$hasPaid) {
+                            $statusResponse = Http::withBasicAuth($serverKey, '')
+                                ->timeout(10)
+                                ->get($statusUrl);
+
+                            $transactionStatus = null;
+                            if ($statusResponse->successful()) {
+                                $transactionStatus = $statusResponse->json()['transaction_status'] ?? null;
+                            }
+
+                            if ($transactionStatus === 'settlement') {
+                                $refundUrl = $isProduction
+                                    ? "https://api.midtrans.com/v2/{$pesanan->id}/refund"
+                                    : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/refund";
+
+                                $refundResponse = Http::withBasicAuth($serverKey, '')
+                                    ->asJson()
+                                    ->acceptJson()
+                                    ->timeout(10)
+                                    ->post($refundUrl, [
+                                        'refund_key' => 'REF-'.$pesanan->id.'-'.time(),
+                                        'amount' => (int) $pembayaran->totalPembayaran,
+                                        'reason' => 'Pesanan dibatalkan oleh Admin',
+                                    ]);
+
+                                Log::info('Midtrans Refund Response for admin cancel order '.$pesanan->id.': '.$refundResponse->body());
+                            } else if (in_array($transactionStatus, ['capture', 'pending', 'challenge'])) {
+                                $cancelUrl = $isProduction
+                                    ? "https://api.midtrans.com/v2/{$pesanan->id}/cancel"
+                                    : "https://api.sandbox.midtrans.com/v2/{$pesanan->id}/cancel";
+
+                                $cancelResponse = Http::withBasicAuth($serverKey, '')
+                                    ->asJson()
+                                    ->acceptJson()
+                                    ->timeout(10)
+                                    ->post($cancelUrl);
+
+                                Log::info('Midtrans Cancel Response for admin cancel order '.$pesanan->id.': '.$cancelResponse->body());
+                            } else {
+                                Log::warning('Midtrans transaction status is ' . ($transactionStatus ?? 'null') . ', skipping refund/cancel call.');
+                            }
+                        } catch (\Exception $me) {
+                            Log::error('Midtrans Refund/Cancel Exception for admin cancel order '.$pesanan->id.': '.$me->getMessage());
+                        }
+                    }
+
                     Pembayaran::whereId($pembayaran->id)->update(['statusPembayaran' => 'gagal']);
                 }
 
@@ -880,11 +1034,6 @@ class c_pesanan extends Controller
 
             return redirect()->back()->with('error', 'Gagal memproses aksi pesanan.');
         }
-    }
-
-    public function trackForm()
-    {
-        return view('guest.track');
     }
 
     public function trackSearch(Request $request)
@@ -1136,6 +1285,7 @@ class c_pesanan extends Controller
 
         if (! $biteshipOrderId) {
             Log::info("Sync Biteship: No Biteship Order ID found for pesanan {$pesanan->id}");
+
             return;
         }
 
@@ -1153,10 +1303,10 @@ class c_pesanan extends Controller
                 Log::info("Sync Biteship: Order $biteshipOrderId status updated to '$status' for pesanan {$pesanan->id}");
                 Cache::forget("biteship_tracking_{$biteshipOrderId}");
             } else {
-                Log::warning("Sync Biteship: Failed to update order $biteshipOrderId to '$status'. Response: " . $response->body());
+                Log::warning("Sync Biteship: Failed to update order $biteshipOrderId to '$status'. Response: ".$response->body());
             }
         } catch (\Exception $e) {
-            Log::error("Sync Biteship Exception: " . $e->getMessage());
+            Log::error('Sync Biteship Exception: '.$e->getMessage());
         }
     }
 
