@@ -140,6 +140,8 @@
 
 <x-modal id="modalBeratKurang" title="Berat Tidak Mencukupi" message="Minimal total berat untuk checkout adalah 500 Kg. Silakan tambah produk atau pilih lebih banyak item." confirmText="Oke" cancelText="Batal" confirmId="btnCloseBeratKurang" cancelId="btnCloseBeratKurang2" />
 
+<x-modal id="modalStokKurang" title="Stok Tidak Mencukupi" message="Jumlah yang dimasukkan melebihi stok yang tersedia." confirmText="Oke" cancelText="Batal" confirmId="btnCloseStokKurang" cancelId="btnCloseStokKurang2" />
+
 <script>
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 let idYangDihapus = null;
@@ -240,9 +242,32 @@ function tambahJumlah(id) {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
     })
-    .then(r => r.json())
-    .then(data => {
-        if (data.jumlah !== undefined) updateRow(id, data.jumlah, data.subtotal, data.cartCount);
+    .then(async r => {
+        const data = await r.json();
+        if (r.ok) {
+            if (data.jumlah !== undefined) updateRow(id, data.jumlah, data.subtotal, data.cartCount);
+        } else {
+            const modal = document.getElementById('modalStokKurang');
+            if (modal) {
+                const msgEl = modal.querySelector('p');
+                if (msgEl) {
+                    msgEl.textContent = data.message || 'Jumlah sudah mencapai batas stok.';
+                }
+            }
+            openModal('modalStokKurang');
+            if (data.jumlah !== undefined) updateRow(id, data.jumlah, data.subtotal, data.cartCount);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        const modal = document.getElementById('modalStokKurang');
+        if (modal) {
+            const msgEl = modal.querySelector('p');
+            if (msgEl) {
+                msgEl.textContent = 'Terjadi kesalahan jaringan.';
+            }
+        }
+        openModal('modalStokKurang');
     });
 }
 
@@ -294,7 +319,14 @@ function triggerUpdateInput(input, id) {
                 updateRow(id, data.jumlah, data.subtotal, data.cartCount);
             }
         } else {
-            alert(data.message || 'Gagal memperbarui jumlah.');
+            const modal = document.getElementById('modalStokKurang');
+            if (modal) {
+                const msgEl = modal.querySelector('p');
+                if (msgEl) {
+                    msgEl.textContent = data.message || 'Gagal memperbarui jumlah.';
+                }
+            }
+            openModal('modalStokKurang');
             if (data.jumlah !== undefined) {
                 updateRow(id, data.jumlah, data.subtotal, data.cartCount);
             }
@@ -302,7 +334,14 @@ function triggerUpdateInput(input, id) {
     })
     .catch(err => {
         console.error(err);
-        alert('Terjadi kesalahan jaringan.');
+        const modal = document.getElementById('modalStokKurang');
+        if (modal) {
+            const msgEl = modal.querySelector('p');
+            if (msgEl) {
+                msgEl.textContent = 'Terjadi kesalahan jaringan.';
+            }
+        }
+        openModal('modalStokKurang');
     });
 }
 
@@ -361,5 +400,7 @@ document.getElementById('btnSubmitCheckout').addEventListener('click', () => {
 document.getElementById('btnCloseCheckout').addEventListener('click', () => closeModal('modalKonfirmasiCheckout'));
 document.getElementById('btnCloseBeratKurang').addEventListener('click', () => closeModal('modalBeratKurang'));
 document.getElementById('btnCloseBeratKurang2').addEventListener('click', () => closeModal('modalBeratKurang'));
+document.getElementById('btnCloseStokKurang').addEventListener('click', () => closeModal('modalStokKurang'));
+document.getElementById('btnCloseStokKurang2').addEventListener('click', () => closeModal('modalStokKurang'));
 </script>
 @endsection

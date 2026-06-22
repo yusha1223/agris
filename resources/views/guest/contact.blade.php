@@ -32,13 +32,13 @@
                 <p class="text-gray-500 mb-10 text-lg">Ada pertanyaan atau ingin bekerja sama sebagai mitra? Tim kami siap membantu Anda dengan sepenuh hati.</p>
 
                 <div class="space-y-6">
-                    <div class="flex items-start gap-6 p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                        <div class="w-14 h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
-                            <i class="fa-solid fa-location-dot text-2xl"></i>
+                    <div class="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
+                            <i class="fa-solid fa-location-dot text-xl sm:text-2xl"></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-lg">Kantor Pusat</h4>
-                            <p class="text-gray-500 capitalize">
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-gray-800 text-base sm:text-lg">Kantor Pusat</h4>
+                            <p class="text-gray-500 capitalize break-words">
                                 @if($admin && (!empty($admin->detailAlamat) || !empty($admin->desa->namaDesa)))
                                     {{ !empty($admin->detailAlamat) ? strtolower($admin->detailAlamat) . ',' : '' }}
                                     {{ !empty($admin->desa->namaDesa) ? strtolower($admin->desa->namaDesa) . ',' : '' }}
@@ -51,23 +51,23 @@
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-6 p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-14 h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
-                            <i class="fa-solid fa-phone text-2xl"></i>
+                    <div class="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
+                            <i class="fa-solid fa-phone text-xl sm:text-2xl"></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-lg">Telepon & WhatsApp</h4>
-                            <p class="text-gray-500">{{ $admin->noTelp ?? '+62 812-3456-7890' }}</p>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-gray-800 text-base sm:text-lg">Telepon & WhatsApp</h4>
+                            <p class="text-gray-500 break-words">{{ $admin->noTelp ?? '+62 812-3456-7890' }}</p>
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-6 p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-                        <div class="w-14 h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
-                            <i class="fa-solid fa-envelope text-2xl"></i>
+                    <div class="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 rounded-3xl border-2 border-gray-300 hover:border-[#58CC02]/30 hover:bg-[#58CC02]/5 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#58CC02]/10 rounded-2xl flex items-center justify-center text-[#58CC02] shrink-0">
+                            <i class="fa-solid fa-envelope text-xl sm:text-2xl"></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-lg">Email Resmi</h4>
-                            <p class="text-gray-500">{{ $admin->email ?? 'agrisagroindustri@agris.co.id' }}</p>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-gray-800 text-base sm:text-lg">Email Resmi</h4>
+                            <p class="text-gray-500 break-words">{{ $admin->email ?? 'agrisagroindustri@agris.co.id' }}</p>
                         </div>
                     </div>
                 </div>

@@ -28,10 +28,6 @@ Route::get('/contact', function () {
 Route::get('/blog', [c_blog::class, 'indexGuest'])->name('guest.blog.index');
 Route::get('/blog/{id}', [c_blog::class, 'showGuest'])->name('guest.blog.show');
 
-// Public Tracking Page
-Route::get('/track', [c_pesanan::class, 'trackForm'])->name('guest.track');
-Route::post('/track/search', [c_pesanan::class, 'trackSearch'])->name('guest.track.search');
-
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
@@ -86,7 +82,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/chat', [c_chat::class, 'index'])->name('agen.chat.index');
 
-        // Checkout & Orders (Pesanan) Routes
         Route::get('/checkout', [c_pesanan::class, 'checkoutForm'])->name('agen.checkout.form');
         Route::post('/checkout', [c_pesanan::class, 'checkoutStore'])->name('agen.checkout.store');
         Route::post('/checkout/cek-ongkir', [c_pesanan::class, 'cekOngkir'])->name('agen.checkout.cek-ongkir');
@@ -124,7 +119,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/chat', [c_chat::class, 'index'])->name('chat.index');
 
-        // Admin Pesanan Routes
         Route::get('/pesanan', [c_pesanan::class, 'adminIndex'])->name('pesanan.index');
         Route::get('/pesanan/{id}', [c_pesanan::class, 'adminShow'])->name('pesanan.show');
         Route::post('/pesanan/{id}/action', [c_pesanan::class, 'adminAction'])->name('pesanan.action');

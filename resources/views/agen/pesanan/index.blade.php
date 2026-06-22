@@ -9,6 +9,27 @@
         <p class="text-gray-500 text-xs md:text-sm mt-1">Pantau status pesanan dan riwayat belanja Anda dengan mudah</p>
     </div>
 
+    @if(session('success'))
+        <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-xl mb-6 text-sm font-bold flex items-center gap-3" data-aos="fade-up">
+            <i class="fa-solid fa-circle-check text-lg text-green-500"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-xl mb-6 text-sm font-bold flex items-center gap-3" data-aos="fade-up">
+            <i class="fa-solid fa-triangle-exclamation text-lg text-red-500"></i>
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
+
+    @if(session('info'))
+        <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 rounded-xl mb-6 text-sm font-bold flex items-center gap-3" data-aos="fade-up">
+            <i class="fa-solid fa-circle-info text-lg text-blue-500"></i>
+            <span>{{ session('info') }}</span>
+        </div>
+    @endif
+
     @php
         $activeTab = $activeTab ?? 'transaksi';
     @endphp
@@ -112,12 +133,9 @@
                                     </a>
 
                                     @if($pesanan->status_pesanan === 'diproses')
-                                        <form action="{{ route('agen.pesanan.batal', $pesanan->id) }}" method="POST" class="flex-1 sm:flex-initial" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini? Stok produk akan dikembalikan.')">
-                                            @csrf
-                                            <button type="submit" class="w-full text-center border border-red-200 text-red-600 hover:bg-red-50 px-3.5 py-2 rounded-xl text-xs font-black transition">
-                                                Batal
-                                            </button>
-                                        </form>
+                                        <button type="button" onclick="confirmBatal('{{ route('agen.pesanan.batal', $pesanan->id) }}')" class="flex-1 sm:flex-initial text-center border border-red-200 text-red-600 hover:bg-red-50 px-3.5 py-2 rounded-xl text-xs font-black transition">
+                                            Batal
+                                        </button>
                                     @endif
 
                                     @if($pesanan->status_pesanan === 'dikirim')
@@ -126,12 +144,9 @@
                                             $canConfirm = in_array($bStatus, ['dropping_off', 'droppingOff', 'delivered']);
                                         @endphp
                                         @if($canConfirm)
-                                        <form action="{{ route('agen.pesanan.diterima', $pesanan->id) }}" method="POST" class="flex-1 sm:flex-initial" onsubmit="return confirm('Apakah Anda yakin pesanan sudah sampai dan diterima dengan baik? Transaksi akan diselesaikan.')">
-                                            @csrf
-                                            <button type="submit" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-black transition shadow-sm">
-                                                Diterima
-                                            </button>
-                                        </form>
+                                        <button type="button" onclick="confirmDiterima('{{ route('agen.pesanan.diterima', $pesanan->id) }}')" class="flex-1 sm:flex-initial w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-black transition shadow-sm">
+                                            Diterima
+                                        </button>
                                         @endif
                                     @endif
                                 </div>
@@ -229,7 +244,79 @@
     </div>
 </div>
 
+<x-modal id="modalConfirmDiterima"
+         title="Konfirmasi Penerimaan"
+         message="Apakah Anda yakin pesanan sudah sampai dan diterima dengan baik? Transaksi akan diselesaikan."
+         confirmText="Iya"
+         cancelText="Batal"
+         confirmId="btnSubmitDiterima"
+         cancelId="btnCloseDiterima" />
+
+<x-modal id="modalConfirmBatal"
+         title="Konfirmasi Pembatalan"
+         message="Apakah Anda yakin ingin membatalkan pesanan ini? Stok produk akan dikembalikan secara otomatis."
+         confirmText="Ya"
+         cancelText="Batal"
+         confirmId="btnSubmitBatal"
+         cancelId="btnCloseBatal" />
+
+<form id="formConfirmDiterima" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<form id="formConfirmBatal" method="POST" style="display: none;">
+    @csrf
+</form>
+
 <script>
+    window.confirmDiterima = function(actionUrl) {
+        const form = document.getElementById('formConfirmDiterima');
+        if (form) {
+            form.action = actionUrl;
+            openModal('modalConfirmDiterima');
+        }
+    };
+
+    window.confirmBatal = function(actionUrl) {
+        const form = document.getElementById('formConfirmBatal');
+        if (form) {
+            form.action = actionUrl;
+            openModal('modalConfirmBatal');
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnSubmitDiterima = document.getElementById('btnSubmitDiterima');
+        if (btnSubmitDiterima) {
+            btnSubmitDiterima.addEventListener('click', function() {
+                const form = document.getElementById('formConfirmDiterima');
+                if (form) form.submit();
+            });
+        }
+
+        const btnCloseDiterima = document.getElementById('btnCloseDiterima');
+        if (btnCloseDiterima) {
+            btnCloseDiterima.addEventListener('click', function() {
+                closeModal('modalConfirmDiterima');
+            });
+        }
+
+        const btnSubmitBatal = document.getElementById('btnSubmitBatal');
+        if (btnSubmitBatal) {
+            btnSubmitBatal.addEventListener('click', function() {
+                const form = document.getElementById('formConfirmBatal');
+                if (form) form.submit();
+            });
+        }
+
+        const btnCloseBatal = document.getElementById('btnCloseBatal');
+        if (btnCloseBatal) {
+            btnCloseBatal.addEventListener('click', function() {
+                closeModal('modalConfirmBatal');
+            });
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const activeOrderIds = @json(
             $activeTab === 'keuangan'

@@ -471,7 +471,7 @@
                     @endif
                     @if($noResi && !str_contains($noResi, 'AMBIL'))
                     <a href="{{ route('agen.pesanan.lacak', $pesanan->id) }}" target="_blank" class="block w-full bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 rounded-2xl font-black text-xs flex items-center justify-center gap-2 transition border border-blue-100 cursor-pointer">
-                        <i class="fa-solid fa-map-location-dot"></i> Lacak Pengiriman{{ $biteshipOrderId ? ' via Biteship' : '' }}
+                        <i class="fa-solid fa-map-location-dot"></i> Lacak Pengiriman{{ $biteshipOrderId ? '' : '' }}
                     </a>
                     @endif
                 </div>
@@ -507,7 +507,7 @@
                                 @endphp
                                 {{ $displayMethod }}
                             @else
-                                MIDTRANS ONLINE
+                                Transfer
                             @endif
                         </span>
                     </div>
@@ -558,9 +558,9 @@
                     <h3 class="font-extrabold text-gray-800 text-xs mb-4 uppercase tracking-wider text-gray-400 pb-2 border-b border-gray-50">Konfirmasi Penerimaan</h3>
                     <p class="text-xs text-gray-400 font-semibold leading-relaxed">Pesanan Anda telah dikirimkan. Harap klik tombol di bawah ini jika barang sudah Anda terima dengan baik.</p>
 
-                    <form action="{{ route('agen.pesanan.diterima', $pesanan->id) }}" method="POST" onsubmit="return confirm('Konfirmasi bahwa Anda telah menerima pesanan ini? Aksi ini tidak dapat dibatalkan.')">
+                    <form id="formDiterima" action="{{ route('agen.pesanan.diterima', $pesanan->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full bg-[#0f8629] hover:bg-[#0c6b20] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer">
+                        <button type="button" onclick="openModal('modalConfirmDiterima')" class="w-full bg-[#0f8629] hover:bg-[#0c6b20] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer">
                             <i class="fa-solid fa-circle-check"></i> Pesanan Sudah Diterima
                         </button>
                     </form>
@@ -573,9 +573,15 @@
                     <p class="text-xs text-gray-400 font-semibold leading-relaxed">Pesanan Anda telah disimpan. Silakan lakukan pembayaran agar pesanan dapat segera diproses.</p>
 
                     @if($pembayaran && $pembayaran->snapToken)
-                        <button id="btnPayNow" class="w-full bg-[#58CC02] hover:bg-[#46a302] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer">
-                            <i class="fa-solid fa-credit-card"></i> Bayar Sekarang
-                        </button>
+                        @if($isMock || str_starts_with($pembayaran->snapToken, 'MOCK-SNAP-TOKEN-'))
+                            <button id="btnSimulatePay" class="w-full bg-[#3b82f6] hover:bg-[#2563eb] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer">
+                                <i class="fa-solid fa-laptop-code"></i> Simulasikan Pembayaran (Offline)
+                            </button>
+                        @else
+                            <button id="btnPayNow" class="w-full bg-[#58CC02] hover:bg-[#46a302] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer">
+                                <i class="fa-solid fa-credit-card"></i> Bayar Sekarang
+                            </button>
+                        @endif
                     @else
                         <div class="p-3 bg-red-50 text-red-600 rounded-2xl text-[11px] font-bold text-center">
                             Gagal memuat Snap token pembayaran.
@@ -622,73 +628,96 @@
                 });
             });
         }
+
+        const btnSimulate = document.getElementById('btnSimulatePay');
+        if (btnSimulate) {
+            btnSimulate.addEventListener('click', function() {
+                btnSimulate.disabled = true;
+                btnSimulate.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses...';
+                btnSimulate.className = "w-full bg-slate-300 text-slate-500 py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 cursor-wait transition duration-200";
+
+                fetch('{{ route('agen.pesanan.bayar-simulasi', $pesanan->id) }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = `/agen/pesanan/{{ $pesanan->id }}?status=success`;
+                    } else {
+                        alert(data.message || 'Gagal memproses simulasi pembayaran.');
+                        btnSimulate.disabled = false;
+                        btnSimulate.innerHTML = '<i class="fa-solid fa-laptop-code"></i> Simulasikan Pembayaran (Offline)';
+                        btnSimulate.className = "w-full bg-[#3b82f6] hover:bg-[#2563eb] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer";
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Terjadi kesalahan koneksi.');
+                    btnSimulate.disabled = false;
+                    btnSimulate.innerHTML = '<i class="fa-solid fa-laptop-code"></i> Simulasikan Pembayaran (Offline)';
+                    btnSimulate.className = "w-full bg-[#3b82f6] hover:bg-[#2563eb] text-white py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition duration-200 cursor-pointer";
+                });
+            });
+        }
     });
 </script>
 @endif
 
 @if($pesanan->status === 'diproses')
-{{-- Modal Batal Pesanan Kustom (tanpa gambar) --}}
-<div id="batalPesananModal" class="fixed inset-0 z-300 hidden items-center justify-center p-4 overflow-x-hidden overflow-y-auto outline-none focus:outline-none modal-container">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 modal-overlay" data-modal-id="batalPesananModal"></div>
-
-    <div id="content-batalPesananModal" class="relative bg-white rounded-[2rem] p-7 max-w-sm w-full shadow-2xl border border-gray-100 transition-all duration-300 transform scale-95 opacity-0">
-
-        {{-- Header strip --}}
-        <div class="h-1.5 w-16 rounded-full bg-red-400 mx-auto mb-6"></div>
-
-        {{-- Title area --}}
-        <div class="text-center mb-5">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-50 mb-4">
-                <i class="fa-solid fa-ban text-2xl text-red-500"></i>
-            </div>
-            <h3 class="text-xl font-black text-gray-900 mb-2">Batalkan Pesanan?</h3>
-            <p class="text-sm text-gray-500 font-medium leading-relaxed">
-                Barang <span class="font-bold text-gray-700">sedang dalam proses pengemasan</span>.
-                Pembatalan sekarang akan mengembalikan stok produk secara otomatis.
-            </p>
-        </div>
-
-        {{-- Warning note --}}
-        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3.5 mb-6 flex items-start gap-2.5">
-            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm mt-0.5 shrink-0"></i>
-            <p class="text-xs text-amber-700 font-semibold leading-relaxed">
-                Aksi ini <strong>tidak dapat dibatalkan</strong>. Pastikan Anda benar-benar ingin membatalkan pesanan ini.
-            </p>
-        </div>
-
-        {{-- Order summary --}}
-        <div class="bg-gray-50 rounded-2xl p-3.5 mb-6 space-y-1.5 text-xs">
-            <div class="flex justify-between">
-                <span class="text-gray-400 font-semibold">No. Pesanan</span>
-                <span class="font-mono font-bold text-gray-700">#{{ strtoupper(substr($pesanan->id, -8)) }}</span>
-            </div>
-            <div class="flex justify-between">
-                <span class="text-gray-400 font-semibold">Total Tagihan</span>
-                <span class="font-black text-gray-800">Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400 font-semibold">Status</span>
-                <span class="bg-blue-50 text-blue-600 border border-blue-100 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase">Sedang Dikemas</span>
-            </div>
-        </div>
-
-        {{-- Actions --}}
-        <div class="flex gap-3">
-            <button type="button" onclick="closeModal('batalPesananModal')"
-                    class="flex-1 py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-600 font-bold rounded-2xl transition duration-200 text-xs cursor-pointer">
-                Urungkan
-            </button>
-            <button type="button" id="btnKonfirmasiBatal"
-                    onclick="document.getElementById('batalForm').submit(); this.disabled=true; this.innerHTML='<i class=\'fa-solid fa-circle-notch fa-spin mr-1\'></i>';  this.classList.add('opacity-60','cursor-wait');"
-                    class="flex-1 py-3.5 bg-red-500 hover:bg-red-600 text-white font-black rounded-2xl transition duration-200 text-xs flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-                <i class="fa-solid fa-ban"></i> Ya, Batalkan
-            </button>
-        </div>
-    </div>
-</div>
+<x-modal id="batalPesananModal"
+         title="Batalkan Pesanan?"
+         message="Apakah Anda yakin ingin membatalkan pesanan ini? Stok produk akan dikembalikan secara otomatis. Aksi ini tidak dapat dibatalkan."
+         confirmText="Ya"
+         cancelText="Batal"
+         confirmId="btnSubmitBatal"
+         cancelId="btnCloseBatal" />
 @endif
 
+<x-modal id="modalConfirmDiterima"
+         title="Konfirmasi Penerimaan"
+         message="Apakah Anda yakin telah menerima pesanan ini? Aksi ini tidak dapat dibatalkan."
+         confirmText="Iya"
+         cancelText="Batal"
+         confirmId="btnSubmitDiterima"
+         cancelId="btnCloseDiterima" />
+
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnSubmitDiterima = document.getElementById('btnSubmitDiterima');
+        if (btnSubmitDiterima) {
+            btnSubmitDiterima.addEventListener('click', function() {
+                const form = document.getElementById('formDiterima');
+                if (form) form.submit();
+            });
+        }
+
+        const btnCloseDiterima = document.getElementById('btnCloseDiterima');
+        if (btnCloseDiterima) {
+            btnCloseDiterima.addEventListener('click', function() {
+                closeModal('modalConfirmDiterima');
+            });
+        }
+
+        const btnSubmitBatal = document.getElementById('btnSubmitBatal');
+        if (btnSubmitBatal) {
+            btnSubmitBatal.addEventListener('click', function() {
+                const form = document.getElementById('batalForm');
+                if (form) form.submit();
+            });
+        }
+
+        const btnCloseBatal = document.getElementById('btnCloseBatal');
+        if (btnCloseBatal) {
+            btnCloseBatal.addEventListener('click', function() {
+                closeModal('batalPesananModal');
+            });
+        }
+    });
 function copyResiSidebar(btn, resi) {
     navigator.clipboard.writeText(resi).then(() => {
         btn.innerHTML = '<i class="fa-solid fa-check text-[#58CC02] text-xs"></i>';

@@ -54,7 +54,7 @@
 
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
         <?php $__empty_1 = true; $__currentLoopData = $produks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-        <div id="product-card-<?php echo e($item->id); ?>" class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full relative" data-aos="zoom-in" data-aos-delay="<?php echo e(($loop->iteration - 1) * 50); ?>">
+        <div id="product-card-<?php echo e($item->id); ?>" class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full relative" data-aos="fade-up" data-aos-delay="<?php echo e(($loop->iteration - 1) * 50); ?>">
             <a href="<?php echo e(route('agen.produk.show', $item->id)); ?>" class="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
                 <?php if($item->fotoProduk): ?>
                     <img src="<?php echo e(asset('storage/' . $item->fotoProduk)); ?>" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="<?php echo e($item->namaProduk); ?>">

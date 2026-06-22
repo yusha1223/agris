@@ -87,14 +87,24 @@
             if(data.pricing) {
                 let html = '';
                 data.pricing.forEach(p => {
+                    const price = p.price;
+                    const originalPrice = p.original_price || p.list_price;
+                    let priceHtml = `<div class="font-bold text-sm">Rp ${price.toLocaleString('id-ID')}</div>`;
+                    if (originalPrice && originalPrice > price) {
+                        priceHtml = `
+                            <div class="text-right">
+                                <p class="text-[10px] text-gray-400 line-through">Rp ${originalPrice.toLocaleString('id-ID')}</p>
+                                <p class="font-bold text-sm text-green-600">Rp ${price.toLocaleString('id-ID')}</p>
+                            </div>`;
+                    }
                     html += `
                         <label class="flex items-center p-4 border border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="courier" value="${p.price}" onchange="applyOngkir(${p.price})">
+                            <input type="radio" name="courier" value="${price}" onchange="applyOngkir(${price})">
                             <div class="ml-4 flex-1">
                                 <p class="text-xs font-bold uppercase">${p.courier_name} - ${p.courier_service_name}</p>
                                 <p class="text-[10px] text-gray-400 font-bold italic">Estimasi: ${p.duration}</p>
                             </div>
-                            <div class="font-bold text-sm">Rp ${p.price.toLocaleString('id-ID')}</div>
+                            ${priceHtml}
                         </label>`;
                 });
                 list.innerHTML = html;

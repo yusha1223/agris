@@ -7,7 +7,7 @@
                     <img src="{{ asset('images/icon.svg') }}" class="w-40" alt="Logo AGRIS">
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    Marketplace pertanian modern yang menyediakan kebutuhan terbaik untuk petani dengan sistem terpercaya.
+                    platform pertanian modern yang menyediakan kebutuhan terbaik untuk petani dengan sistem terpercaya.
                 </p>
             </div>
 
@@ -18,7 +18,6 @@
                     <li><a href="{{ route('about') }}" class="hover:text-[#58CC02] transition">Tentang</a></li>
                     <li><a href="{{ route('guest.blog.index') }}" class="hover:text-[#58CC02] transition">Blog</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-[#58CC02] transition">Kontak</a></li>
-                    <li><a href="{{ route('guest.track') }}" class="hover:text-[#58CC02] transition">Lacak Pesanan</a></li>
                 </ul>
             </div>
 

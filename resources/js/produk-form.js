@@ -69,7 +69,6 @@ function previewImage(input) {
     }
 }
 
-// Modal Logic
 function openConfirmModal() {
     document.getElementById('modalKonfirmasiProduk').classList.remove('hidden');
 }

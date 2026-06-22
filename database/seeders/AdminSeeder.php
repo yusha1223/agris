@@ -79,7 +79,6 @@ class AdminSeeder extends Seeder
                 }
             }
         } catch (\Exception $e) {
-            // Gracefully ignore and fallback
         }
 
         try {
@@ -100,10 +99,8 @@ class AdminSeeder extends Seeder
                 }
             }
         } catch (\Exception $e) {
-            // Gracefully ignore and fallback
         }
 
-        // Return a standard dummy Biteship area ID for testing offline
         return 'IDNP6IDNC148IDND843IDZ12250';
     }
 }

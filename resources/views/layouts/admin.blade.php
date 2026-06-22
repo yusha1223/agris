@@ -19,7 +19,7 @@
     <div id="progressBar" class="h-full bg-[#58CC02] w-0 transition-all duration-300 ease-linear"></div>
 </div>
 
-<div class="fixed bottom-5 right-5 z-100 space-y-3">
+<div class="fixed bottom-5 right-5 z-999999 space-y-3">
     @if(session('success'))
         <div class="alert-info flex items-center w-full max-w-xs p-4 rounded-2xl shadow-xl border border-green-200 bg-green-50" role="alert">
             <div class="inline-flex items-center justify-center shrink-0 w-10 h-10 rounded-full bg-green-600 text-white">

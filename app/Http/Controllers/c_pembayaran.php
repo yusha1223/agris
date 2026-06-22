@@ -124,7 +124,7 @@ class c_pembayaran extends Controller
         $serverKey = config('services.midtrans.server_key');
         $isProduction = config('services.midtrans.is_production', false);
 
-        if (empty($serverKey)) {
+        if (empty($serverKey) || ($pembayaran->snapToken && str_starts_with($pembayaran->snapToken, 'MOCK-SNAP-TOKEN-'))) {
             return redirect()->back()->with('info', 'Aplikasi dalam mode simulasi offline. Silakan klik tombol "Simulasikan Pembayaran" untuk mencoba.');
         }
 

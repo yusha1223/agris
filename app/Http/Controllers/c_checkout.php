@@ -59,11 +59,37 @@ class c_checkout extends Controller
             ])->post(rtrim(config('services.biteship.url'), '/') . '/rates/couriers', [
                     'origin_area_id' => $originAreaId,
                     'destination_area_id' => $destAreaId,
-                    'couriers' => 'jne,sicepat,tiki,anteraja',
+                    'couriers' => 'jne,sicepat,tiki,anteraja,jnt',
                     'items' => $request->items
                 ]);
 
-            return response()->json($response->json());
+            $data = $response->json();
+
+            if (isset($data['pricing'])) {
+                $exclude = ['motor', 'reguler', 'regular', 'express', 'instant', 'same day', 'halu', 'yes', 'next day'];
+                $include = ['cargo', 'truck', 'jtr', 'gokil', 'trucking', 'freight'];
+
+                $data['pricing'] = array_values(array_filter($data['pricing'], function ($rate) use ($exclude, $include) {
+                    $name = strtolower($rate['courier_service_name'] ?? '');
+                    $code = strtolower($rate['courier_service_code'] ?? '');
+
+                    foreach ($exclude as $keyword) {
+                        if (str_contains($name, $keyword) || str_contains($code, $keyword)) {
+                            return false;
+                        }
+                    }
+
+                    foreach ($include as $keyword) {
+                        if (str_contains($name, $keyword) || str_contains($code, $keyword)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }));
+            }
+
+            return response()->json($data);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

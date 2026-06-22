@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                <div class="relative overflow-hidden flex items-center p-5 rounded-2xl border-2 border-[#58CC02] bg-gradient-to-r from-green-50/20 to-emerald-50/10 cursor-default shadow-xs">
+                <div class="relative overflow-hidden flex items-center p-5 rounded-2xl border-2 border-[#58CC02] bg-linear-to-r from-green-50/20 to-emerald-50/10 cursor-default shadow-xs">
                     <div class="absolute -right-8 -bottom-8 w-24 h-24 text-green-200/20 pointer-events-none">
                         <i class="fa-solid fa-shield-halved text-7xl"></i>
                     </div>
@@ -174,7 +174,7 @@
 
         <div class="sticky top-28 space-y-6">
             <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#58CC02]/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-[#58CC02]/10 to-transparent rounded-bl-full pointer-events-none"></div>
 
                 <h2 class="font-bold text-slate-800 text-sm mb-6 pb-4 border-b border-slate-100 uppercase tracking-wider">Ringkasan Belanja</h2>
 
@@ -435,6 +435,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         btnSubmit.className = "w-full bg-slate-300 text-slate-500 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 cursor-wait transition duration-300";
 
         if (savedSnapToken && savedOrderId) {
+            if (savedSnapToken.startsWith('MOCK-SNAP-TOKEN-')) {
+                window.location.href = `/agen/pesanan/${savedOrderId}`;
+                return;
+            }
             window.snap.pay(savedSnapToken, {
                 onSuccess: function(result) {
                     window.location.href = `/agen/pesanan/${savedOrderId}?status=success`;
@@ -477,6 +481,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (data.success) {
                 savedSnapToken = data.snap_token;
                 savedOrderId = data.order_id;
+
+                if (savedSnapToken && savedSnapToken.startsWith('MOCK-SNAP-TOKEN-')) {
+                    window.location.href = `/agen/pesanan/${savedOrderId}`;
+                    return;
+                }
 
                 window.snap.pay(savedSnapToken, {
                     onSuccess: function(result) {

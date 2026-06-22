@@ -9,15 +9,12 @@ class c_laporan extends Controller
 {
     public function index(Request $request)
     {
-        $pemasukanList = Pembayaran::statusPembayaran('berhasil')
+        $pemasukanList = Pembayaran::whereNotNull('waktuDibayar')
             ->with('pesanan.user')
             ->get();
 
-        $pengeluaranList = Pembayaran::query()
-            ->where(function ($query) {
-                $query->statusPembayaran('gagal')
-                    ->whereNotNull('waktuDibayar');
-            })
+        $pengeluaranList = Pembayaran::statusPembayaran('gagal')
+            ->whereNotNull('waktuDibayar')
             ->with('pesanan.user')
             ->get();
 
@@ -35,16 +32,14 @@ class c_laporan extends Controller
         }
 
         foreach ($pengeluaranList as $item) {
-            if ($item->statusPembayaran === 'gagal' && $item->waktuDibayar !== null) {
                 $riwayat[] = [
                     'id' => $item->id,
                     'pesananId' => $item->pesananId,
                     'tanggal' => $item->updated_at,
                     'tipe' => 'pengeluaran',
-                    'deskripsi' => 'Pembatalan & Pengembalian Pesanan #'.substr($item->pesananId, 0, 8).' (Pelanggan: '.($item->pesanan->user->namaLengkap ?? 'User').')',
+                    'deskripsi' => 'Refund Dana Pesanan #'.substr($item->pesananId, 0, 8).' (Pelanggan: '.($item->pesanan->user->namaLengkap ?? 'User').')',
                     'nominal' => $item->totalPembayaran,
                 ];
-            }
         }
 
         usort($riwayat, function ($a, $b) {

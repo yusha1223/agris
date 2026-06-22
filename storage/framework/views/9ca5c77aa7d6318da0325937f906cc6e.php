@@ -7,7 +7,7 @@
                     <img src="<?php echo e(asset('images/icon.svg')); ?>" class="w-40" alt="Logo AGRIS">
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    Marketplace pertanian modern yang menyediakan kebutuhan
+                    platform pertanian modern yang menyediakan kebutuhan
                     terbaik untuk petani dengan sistem terpercaya.
                 </p>
             </div>

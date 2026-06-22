@@ -156,7 +156,7 @@
 
                             @if($kemitraan->statusPengajuan == 'Ditolak')
                                 <div class="p-4 bg-red-50 border border-red-100 rounded-2xl text-center">
-                                    <p class="text-xs font-black text-red-600 uppercase tracking-widest">Pengajuan Ditolak</p>
+                                    <p class="text-xs font-black text-red-600 uppercase tracking-widest">Kemitraan Ditolak</p>
                                 </div>
                             @endif
                         </div>

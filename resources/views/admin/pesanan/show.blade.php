@@ -233,9 +233,11 @@
                     </div>
                     @php
                         $trackId = $biteshipOrderId ?: $noResi;
+                        $isBiteshipTesting = empty(config('services.biteship.key')) || str_starts_with(config('services.biteship.key'), 'biteship_test.') || config('app.env') === 'local';
+                        $biteshipTrackUrl = $isBiteshipTesting ? 'https://track.biteship.com/tracking-test' : 'https://track.biteship.com/' . $trackId;
                     @endphp
                     @if(!empty($trackId) && !str_contains(strtoupper($trackId), 'AMBIL'))
-                        <a href="https://track-sandbox.biteship.com/{{ $trackId }}" target="_blank" class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 px-3 py-1 rounded-lg text-blue-650 font-bold text-[10px] hover:bg-blue-100 transition">
+                        <a href="{{ $biteshipTrackUrl }}" target="_blank" class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 px-3 py-1 rounded-lg text-blue-650 font-bold text-[10px] hover:bg-blue-100 transition">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i> Lacak di Paket
                         </a>
                     @endif
@@ -474,26 +476,17 @@
                                 <span class="text-gray-500 select-all font-bold break-all">{{ $pesanan->pembayaran->transactionId ?? '-' }}</span>
                             </div>
                         </div>
-                        @if($pesanan->pembayaran->snapToken)
-                            <div class="mt-4 pt-4 border-t border-gray-100 col-span-1 md:col-span-3 text-xs font-bold">
-                                <span class="text-[9px] text-gray-400 font-black uppercase tracking-wider block mb-2">Midtrans Snap Token</span>
-                                <div class="bg-gray-50 p-3.5 rounded-2xl font-mono text-[10px] md:text-[11px] select-all tracking-wider text-gray-700 border border-gray-150 break-all">
-                                    {{ $pesanan->pembayaran->snapToken }}
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 @else
                     <p class="text-gray-400 text-xs font-semibold">Rincian pembayaran belum dibuat.</p>
                 @endif
             </div>
-
         </div>
 
         <div class="lg:sticky lg:top-28 space-y-6" data-aos="fade-left" data-aos-delay="100">
             <div class="bg-white p-4 md:p-6 rounded-3xl shadow-md relative overflow-hidden">
 
-                <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-green-50 to-transparent pointer-events-none rounded-bl-full"></div>
+                <div class="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-green-50 to-transparent pointer-events-none rounded-bl-full"></div>
 
                 <h2 class="font-extrabold text-gray-800 text-xs md:text-sm mb-4 pb-3 border-b border-gray-100 uppercase tracking-wider">Status</h2>
 
@@ -626,7 +619,7 @@
                     clearInterval(pollInterval);
                 }
             });
-        }, 2000); // Poll every 30 seconds as fallback
+        }, 500);
         @endif
 
         function updateOrderContent(callback) {
@@ -649,7 +642,6 @@
         }
     });
 
-    // Delegate the kirim button loader to document so it survives dynamic updates
     document.addEventListener('submit', function(e) {
         if (e.target && e.target.id === 'formKirimPesanan') {
             const btn = document.getElementById('btnKirimPesanan');
