@@ -155,8 +155,7 @@
                     @empty
                         <tr>
                             <td colspan="8" class="py-16 text-center text-gray-400">
-                                <i class="fa-solid fa-box-open text-4xl mb-3 block"></i>
-                                Tidak ditemukan data transaksi.
+                                Tidak ditemukan data transaksi
                             </td>
                         </tr>
                     @endforelse
@@ -239,8 +238,7 @@
                 </div>
             @empty
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-10 text-center text-gray-400">
-                    <i class="fa-solid fa-box-open text-4xl mb-3 block"></i>
-                    Tidak ditemukan data transaksi.
+                    Tidak ditemukan data transaksi
                 </div>
             @endforelse
 
