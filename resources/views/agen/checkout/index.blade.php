@@ -59,7 +59,7 @@
 <script>
     const itemsBiteship = [
         @foreach($items as $item)
-        { name: "{{ $item->produk->namaProduk }}", quantity: {{ $item->jumlah }}, value: {{ $item->produk->harga }}, weight: {{ $item->produk->kategori->karung}} },
+        { name: "{{ $item->produk->namaProduk }}", quantity: {{ $item->jumlah }}, value: {{ $item->produk->harga }}, weight: {{ $item->produk->kategori->karung * 1000 }} },
         @endforeach
     ];
 
