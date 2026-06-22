@@ -51,6 +51,11 @@
                         class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition font-semibold">
                         <i class="fa-regular fa-id-card mr-3 text-[#0f8629] text-lg"></i> Profil Saya
                     </a>
+                    <div class="mx-4 border-t border-gray-100 my-1"></div>
+                    <button type="button" id="logoutBtnTrigger"
+                        class="w-full flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition font-bold text-left">
+                        <i class="fa-solid fa-right-from-bracket mr-3 text-lg"></i> Logout
+                    </button>
                 </div>
             </div>
 
@@ -93,7 +98,7 @@
             @endforeach
         </nav>
 
-        <div class="p-4 border-t border-white/10 relative z-50">
+        <div class="p-4 border-t border-white/10 md:hidden relative z-50">
             <a href="{{ route('admin.profile') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white transition-all">
                 <i class="fa-solid fa-user-gear w-5 text-center"></i>
                 <span>Profil Saya</span>
