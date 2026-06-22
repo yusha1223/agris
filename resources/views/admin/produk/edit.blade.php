@@ -40,8 +40,7 @@
                                 @endif
                             </div>
                             <input type="file" name="fotoProduk" id="fotoInput" accept=".jpg,.jpeg,.png"
-                                class="absolute inset-0 opacity-0 cursor-pointer"
-                                onchange="previewImage(this)">
+                                class="absolute inset-0 opacity-0 cursor-pointer">
                         </div>
                         @error('fotoProduk')
                             <p class="text-[10px] text-red-500 mt-2 font-bold">{{ $message }}</p>
@@ -187,18 +186,18 @@
         el.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';
     }
 
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
+    if (typeof window.initImageCropper === 'function') {
+        window.initImageCropper({
+            inputSelector: '#fotoInput',
+            previewSelector: '#previewImg',
+            aspectRatio: 1,
+            onCropped: function() {
                 const preview = document.getElementById('previewImg');
                 const icon = document.getElementById('placeholderIcon');
-                preview.src = e.target.result;
                 preview.classList.remove('hidden');
                 icon.classList.add('hidden');
             }
-            reader.readAsDataURL(input.files[0]);
-        }
+        });
     }
 
     document.getElementById('btnSubmitForm').addEventListener('click', () => {

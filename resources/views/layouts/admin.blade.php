@@ -7,6 +7,7 @@
     <title>@yield('title', 'Admin')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/icon.svg') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
     <script>
         window.currentUserId = "{{ Auth::id() }}";
         window.isAdmin = true;
@@ -55,6 +56,26 @@
 
 @stack('modals')
 
+<!-- Global Cropper Modal -->
+<div id="cropperGlobalModal" class="fixed inset-0 z-[999999] hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm transition-opacity duration-300">
+    <div class="relative bg-white rounded-[2rem] p-6 md:p-8 max-w-md w-full shadow-2xl flex flex-col items-center">
+        <h3 class="text-xl font-black text-gray-800 mb-4">Sesuaikan Gambar</h3>
+        <div class="w-full max-h-[300px] overflow-hidden rounded-2xl bg-gray-50 flex items-center justify-center border border-gray-100 mb-6">
+            <img id="cropperGlobalImage" src="" class="max-w-full max-h-[300px] object-contain">
+        </div>
+        <div class="flex gap-3 w-full">
+            <button type="button" id="cropperGlobalCancelBtn" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-xl transition-all active:scale-95 text-xs">
+                Batal
+            </button>
+            <button type="button" id="cropperGlobalSaveBtn" class="flex-1 py-3 bg-[#58CC02] hover:bg-[#4fb802] text-white font-bold rounded-xl transition-all shadow-lg shadow-green-100 active:scale-95 text-xs">
+                Potong & Simpan
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const forms = document.querySelectorAll('form');
@@ -97,6 +118,147 @@
             }, 4000);
         });
     });
+
+    // Image helper functions
+    window.compressImageDirectly = function (file, maxWidth, maxHeight, quality) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob(
+                        (blob) => {
+                            if (blob) {
+                                const compressedFile = new File([blob], file.name.substring(0, file.name.lastIndexOf('.')) + '.jpg', {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                resolve(compressedFile);
+                            } else {
+                                resolve(file);
+                            }
+                        },
+                        'image/jpeg',
+                        quality
+                    );
+                };
+                img.onerror = () => resolve(file);
+            };
+            reader.onerror = () => resolve(file);
+        });
+    };
+
+    window.initImageCropper = function({ inputSelector, previewSelector, aspectRatio = NaN, onCropped = null }) {
+        const fileInput = document.querySelector(inputSelector);
+        if (!fileInput) return;
+
+        fileInput.addEventListener('change', function() {
+            if (!this.files || !this.files[0]) return;
+            const file = this.files[0];
+            if (!file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const modal = document.getElementById('cropperGlobalModal');
+                const img = document.getElementById('cropperGlobalImage');
+                if (!modal || !img) return;
+
+                img.src = event.target.result;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (window.globalCropper) {
+                    window.globalCropper.destroy();
+                }
+
+                window.globalCropper = new Cropper(img, {
+                    aspectRatio: aspectRatio,
+                    viewMode: 1,
+                    autoCropArea: 1,
+                    responsive: true,
+                    restore: false,
+                    checkCrossOrigin: false,
+                    checkOrientation: false
+                });
+
+                const saveBtn = document.getElementById('cropperGlobalSaveBtn');
+                const cancelBtn = document.getElementById('cropperGlobalCancelBtn');
+
+                const newSaveBtn = saveBtn.cloneNode(true);
+                saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
+                const newCancelBtn = cancelBtn.cloneNode(true);
+                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+                newCancelBtn.addEventListener('click', () => {
+                    modal.classList.remove('flex');
+                    modal.classList.add('hidden');
+                    fileInput.value = '';
+                    if (window.globalCropper) window.globalCropper.destroy();
+                });
+
+                newSaveBtn.addEventListener('click', () => {
+                    newSaveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memproses...';
+                    newSaveBtn.disabled = true;
+
+                    const canvas = window.globalCropper.getCroppedCanvas();
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const croppedFile = new File([blob], file.name.substring(0, file.name.lastIndexOf('.')) + '.jpg', {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            });
+
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(croppedFile);
+                            fileInput.files = dataTransfer.files;
+
+                            if (previewSelector) {
+                                const previewImg = document.querySelector(previewSelector);
+                                if (previewImg) {
+                                    previewImg.src = URL.createObjectURL(croppedFile);
+                                    previewImg.classList.remove('hidden');
+                                }
+                            }
+
+                            if (onCropped) {
+                                onCropped(croppedFile);
+                            }
+                        }
+                        modal.classList.remove('flex');
+                        modal.classList.add('hidden');
+                        newSaveBtn.innerHTML = 'Potong & Simpan';
+                        newSaveBtn.disabled = false;
+                        if (window.globalCropper) window.globalCropper.destroy();
+                    }, 'image/jpeg', 0.7);
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 </script>
 </body>
 </html>

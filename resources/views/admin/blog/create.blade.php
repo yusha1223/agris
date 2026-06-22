@@ -28,8 +28,7 @@
                                 </div>
                             </div>
                             <input type="file" name="fotoBlog" id="fotoInput" accept=".jpg,.jpeg,.png"
-                                class="absolute inset-0 opacity-0 cursor-pointer"
-                                onchange="previewImage(this)">
+                                class="absolute inset-0 opacity-0 cursor-pointer">
                         </div>
                         <p class="text-[10px] text-gray-400 mt-2 font-medium text-center">Format: JPG, JPEG, PNG (Maks. 10MB)</p>
                         <div id="clientError" class="hidden text-red-500 text-[11px] mt-1 font-semibold italic text-center"></div>
@@ -87,31 +86,24 @@
 <x-modal id="modalKonfirmasiBlog" title="Konfirmasi" message="Yakin ingin menambahkan blog?" confirmText="Iya" cancelText="Batal" confirmId="btnSubmitForm" cancelId="btnCloseModal" />
 
 <script>
-    function previewImage(input) {
-        const container = document.getElementById('imageContainer');
-        const preview = document.getElementById('previewImg');
-        const icon = document.getElementById('placeholderIcon');
-        const errorDiv = document.getElementById('clientError');
+    if (typeof window.initImageCropper === 'function') {
+        window.initImageCropper({
+            inputSelector: '#fotoInput',
+            previewSelector: '#previewImg',
+            aspectRatio: 16 / 9,
+            onCropped: function() {
+                const container = document.getElementById('imageContainer');
+                const preview = document.getElementById('previewImg');
+                const icon = document.getElementById('placeholderIcon');
+                const errorDiv = document.getElementById('clientError');
 
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-            if (file.size > 10 * 1024 * 1024) {
-                errorDiv.textContent = "Ukuran file terlalu besar!";
-                errorDiv.classList.remove('hidden');
-                input.value = "";
-                return;
-            }
-            errorDiv.classList.add('hidden');
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
+                errorDiv.classList.add('hidden');
                 preview.classList.remove('hidden');
                 icon.classList.add('hidden');
                 container.classList.remove('border-dashed');
                 container.classList.add('border-solid', 'border-[#58CC02]');
             }
-            reader.readAsDataURL(file);
-        }
+        });
     }
 
     document.getElementById('btnSubmitForm').addEventListener('click', () => {

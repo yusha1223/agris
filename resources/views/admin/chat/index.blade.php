@@ -213,9 +213,20 @@
                 });
             };
 
-            const handleFileUpload = (e) => {
+            const handleFileUpload = async (e) => {
                 const file = e.target.files[0];
-                if (file) { selectedFile.value = file; imagePreview.value = true; }
+                if (file) {
+                    if (file.type.startsWith('image/')) {
+                        if (typeof window.compressImageDirectly === 'function') {
+                            selectedFile.value = await window.compressImageDirectly(file, 1200, 1200, 0.7);
+                        } else {
+                            selectedFile.value = file;
+                        }
+                    } else {
+                        selectedFile.value = file;
+                    }
+                    imagePreview.value = true;
+                }
             };
 
             const cancelImage = () => {

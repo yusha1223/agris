@@ -223,13 +223,13 @@
             });
         }
 
-        document.getElementById('fotoProfil').addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => document.getElementById('previewFoto').src = e.target.result;
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
+        if (typeof window.initImageCropper === 'function') {
+            window.initImageCropper({
+                inputSelector: '#fotoProfil',
+                previewSelector: '#previewFoto',
+                aspectRatio: 1
+            });
+        }
     });
 </script>
 @endsection
