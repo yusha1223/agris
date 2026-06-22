@@ -59,17 +59,14 @@
                 </div>
             </div>
 
-            @if(!request()->routeIs('admin.profile'))
             <button id="hamburgerBtn" class="md:hidden p-2.5 text-white hover:bg-white/10 rounded-full transition-all">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
-            @endif
         </div>
     </div>
 </header>
 
-@if(!request()->routeIs('admin.profile'))
-<aside id="sidebar" class="fixed top-0 right-0 md:left-0 md:right-auto z-45 w-64 h-screen transition-transform duration-300 ease-in-out translate-x-full md:translate-x-0 bg-[#0f8629]">
+<aside id="sidebar" class="fixed top-0 right-0 md:left-0 md:right-auto z-45 w-64 h-screen transition-transform duration-300 ease-in-out translate-x-full md:translate-x-0 bg-[#0f8629] {{ request()->routeIs('admin.profile') ? 'md:hidden' : '' }}">
     <div class="h-full flex flex-col">
         <div class="h-16 flex items-center px-6 md:hidden">
             <button id="closeSidebarBtn" class="ml-auto text-white/70 hover:text-white p-2">
@@ -112,7 +109,6 @@
 </aside>
 
 <div id="sidebarOverlay" class="fixed inset-0 z-40 hidden md:hidden bg-black/40 backdrop-blur-[2px]"></div>
-@endif
 
 <x-modal id="logoutModal" title="Konfirmasi" message="Apakah Anda yakin ingin keluar?" confirmText="Iya"
     cancelText="Batal" confirmId="confirmLogoutBtn" cancelId="closeLogoutBtn" />
