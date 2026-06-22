@@ -149,9 +149,6 @@
             <div class="p-6 sm:p-8 bg-slate-900 rounded-3xl text-white w-full max-w-md mx-auto lg:mx-0">
                 <p class="font-bold mb-2 text-green-400">Butuh bantuan lain?</p>
                 <p class="text-xs opacity-70 mb-5">Tim support kami siap membantu anda.</p>
-                <a href="#" class="inline-flex items-center gap-2 text-green-400 font-bold hover:gap-3 transition-all">
-                    Contact Support <i class="fa-solid fa-headset"></i>
-                </a>
             </div>
         </div>
 

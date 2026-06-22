@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             description: "Produk AGRIS",
             value: @js((int) $item->produk->harga),
             quantity: @js((int) $item->jumlah),
-            weight: @js((int) ($item->produk->kategori->karung * 1000))
+            weight: @js((int) ($item->produk->kategori->karung))
         },
         @endforeach
     ];
