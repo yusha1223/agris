@@ -150,21 +150,28 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Gagal login Google.');
+            return redirect()->route('login')->with('error', 'Gagal login dengan Google. Silakan coba lagi.');
         }
 
-        $user = User::firstOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
-                'namaLengkap' => $googleUser->getName(),
-                'password' => Hash::make(Str::random(16)),
-                'noTelp' => '-',
-                'isAdmin' => false,
-            ]
-        );
+        try {
+            $user = User::where('email', $googleUser->getEmail())->first();
 
-        Auth::login($user, true);
-        return $this->redirectByRole($user)->with('success', 'Login Berhasil');
+            if (!$user) {
+                $user = User::create([
+                    'namaLengkap' => $googleUser->getName(),
+                    'email'       => $googleUser->getEmail(),
+                    'password'    => Hash::make(Str::random(24)),
+                    'noTelp'      => 'google_' . Str::uuid(),
+                    'isAdmin'     => false,
+                    'isActive'    => true,
+                ]);
+            }
+
+            Auth::login($user, true);
+            return $this->redirectByRole($user)->with('success', 'Login Berhasil');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Terjadi kesalahan saat login Google: ' . $e->getMessage());
+        }
     }
 
     private function redirectByRole($user)
