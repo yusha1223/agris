@@ -25,7 +25,7 @@
                     <td class="px-8 py-6">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0">
-                                <img src="{{ $item->user->fotoProfil ? asset($item->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($item->user->namaLengkap) }}" class="w-full h-full object-cover">
+                                <img src="{{ $item->user->fotoProfil ? storage_url($item->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($item->user->namaLengkap) }}" class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <p class="font-bold text-gray-800">{{ $item->user->namaLengkap }}</p>
@@ -66,7 +66,7 @@
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-full bg-gray-100 overflow-hidden">
-                        <img src="{{ $item->user->fotoProfil ? asset($item->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($item->user->namaLengkap) }}" class="w-full h-full object-cover">
+                        <img src="{{ $item->user->fotoProfil ? storage_url($item->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($item->user->namaLengkap) }}" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <p class="font-bold text-gray-800">{{ $item->user->namaLengkap }}</p>

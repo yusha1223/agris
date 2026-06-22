@@ -65,12 +65,18 @@ class c_profile extends Controller
         }
 
         if ($request->hasFile('fotoProfil')) {
-            if ($user->fotoProfil && Storage::disk('public')->exists(str_replace('storage/', '', $user->fotoProfil))) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $user->fotoProfil));
+            if ($user->fotoProfil) {
+                $cleanOldPath = ltrim(str_replace('storage/', '', $user->fotoProfil), '/');
+                if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                    Storage::disk('local_public')->delete($cleanOldPath);
+                }
+                if (Storage::disk('public')->exists($cleanOldPath)) {
+                    Storage::disk('public')->delete($cleanOldPath);
+                }
             }
 
             $path = $request->file('fotoProfil')->store('profile_photos', 'public');
-            $user->fotoProfil = 'storage/' . $path;
+            $user->fotoProfil = $path;
         }
 
         if ($request->filled('desaId')) {

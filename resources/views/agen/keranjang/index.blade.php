@@ -52,7 +52,7 @@
                         <td class="px-5 py-4">
                             <div class="w-20 h-20 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center">
                                 @if($item->produk->fotoProduk)
-                                    <img src="{{ asset('storage/' . $item->produk->fotoProduk) }}" class="w-full h-full object-cover">
+                                    <img src="{{ storage_url($item->produk->fotoProduk) }}" class="w-full h-full object-cover">
                                 @else
                                     <i class="fa-solid fa-image text-xl text-gray-200"></i>
                                 @endif
@@ -92,7 +92,7 @@
                         data-id="{{ $item->id }}">
                     <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
                         @if($item->produk->fotoProduk)
-                            <img src="{{ asset('storage/' . $item->produk->fotoProduk) }}" class="w-full h-full object-cover">
+                            <img src="{{ storage_url($item->produk->fotoProduk) }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center"><i class="fa-solid fa-image text-lg text-gray-200"></i></div>
                         @endif

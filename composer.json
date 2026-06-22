@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "codebar-ag/laravel-flysystem-cloudinary": "^13.0",
         "laravel/framework": "^13.0",
         "laravel/reverb": "^1.10",
         "laravel/socialite": "^5.26",
@@ -32,7 +33,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -24,6 +24,13 @@ class Chat extends Model
         'waktu_chat' => 'datetime',
     ];
 
+    protected $appends = ['foto_chat_url'];
+
+    public function getFotoChatUrlAttribute(): ?string
+    {
+        return $this->foto_chat ? storage_url($this->foto_chat) : null;
+    }
+
     public function pengirim(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_pengirim');

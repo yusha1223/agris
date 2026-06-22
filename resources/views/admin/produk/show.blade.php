@@ -22,7 +22,7 @@
             <div class="lg:w-2/5 bg-gray-50 p-4 md:p-8 flex flex-col items-center justify-start border-b lg:border-b-0 lg:border-r border-gray-100" data-aos="fade-right" data-aos-delay="200">
                 <div class="w-full rounded-2xl overflow-hidden bg-white">
                     @if($item->fotoProduk)
-                        <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-auto max-h-125 object-contain mx-auto">
+                        <img src="{{ storage_url($item->fotoProduk) }}" class="w-full h-auto max-h-125 object-contain mx-auto">
                     @else
                         <div class="flex flex-col items-center justify-center aspect-square text-gray-300">
                             <i class="fa-solid fa-image text-6xl mb-2"></i>

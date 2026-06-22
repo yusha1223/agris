@@ -59,7 +59,7 @@
         <div id="product-card-{{ $item->id }}" class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full relative" data-aos="fade-up" data-aos-delay="{{ ($loop->iteration - 1) * 50 }}">
             <a href="{{ route('agen.produk.show', $item->id) }}" class="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
                 @if($item->fotoProduk)
-                    <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $item->namaProduk }}">
+                    <img src="{{ storage_url($item->fotoProduk) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $item->namaProduk }}">
                 @else
                     <div class="flex items-center justify-center h-full text-gray-200">
                         <i class="fa-solid fa-image text-4xl"></i>

@@ -96,7 +96,7 @@
                                     <div class="flex items-center gap-4">
                                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center p-1 shrink-0">
                                             @if($firstDetail->produk->fotoProduk)
-                                                <img src="{{ asset('storage/' . $firstDetail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
+                                                <img src="{{ storage_url($firstDetail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
                                             @else
                                                 <i class="fa-solid fa-image text-xl text-gray-300"></i>
                                             @endif
@@ -198,7 +198,7 @@
                                         <div class="flex items-center gap-4">
                                             <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center p-1 shrink-0">
                                                 @if($firstDetail->produk->fotoProduk)
-                                                    <img src="{{ asset('storage/' . $firstDetail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
+                                                    <img src="{{ storage_url($firstDetail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
                                                 @else
                                                     <i class="fa-solid fa-image text-xl text-gray-300"></i>
                                                 @endif

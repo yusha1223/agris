@@ -1111,7 +1111,7 @@ class c_pesanan extends Controller
                 'jumlah' => $detail->jumlahPesanan,
                 'harga_satuan' => $detail->harga_satuan,
                 'subtotal' => $detail->subtotal,
-                'foto' => ($detail->produk && $detail->produk->fotoProduk) ? asset('storage/'.$detail->produk->fotoProduk) : null,
+                'foto' => ($detail->produk && $detail->produk->fotoProduk) ? storage_url($detail->produk->fotoProduk) : null,
             ];
         }
 

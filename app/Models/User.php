@@ -37,7 +37,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $appends = ['alamatLengkap'];
+    protected $appends = ['alamatLengkap', 'fotoProfilUrl'];
+
+    public function getFotoProfilUrlAttribute(): string
+    {
+        return $this->fotoProfil ? storage_url($this->fotoProfil) : '';
+    }
 
     protected function casts(): array
     {

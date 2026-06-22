@@ -18,7 +18,7 @@
 
             <div class="relative h-44 sm:h-48 md:h-52 w-full overflow-hidden">
                 @if($blog->fotoBlog)
-                    <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 @else
                     <div class="w-full h-full bg-gray-50 flex items-center justify-center text-gray-300">
                         <i class="fa-solid fa-image text-3xl"></i>
@@ -39,7 +39,7 @@
                 <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-50">
                     <div class="flex items-center gap-3">
                         <div class="h-8 w-8 overflow-hidden rounded-full border border-gray-100 bg-gray-50 shadow-sm">
-                            <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
+                            <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
                         </div>
                         <div class="min-w-0">
                             <p class="text-[10px] font-bold text-gray-900 leading-none mb-1">Tanggal Upload</p>

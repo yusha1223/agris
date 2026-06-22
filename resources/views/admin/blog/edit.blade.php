@@ -23,7 +23,7 @@
                                 'border-[#58CC02] border-solid' => $blog->fotoBlog,
                                 'border-gray-300 border-dashed' => !$blog->fotoBlog,
                             ])>
-                                <img id="previewImg" src="{{ $blog->fotoBlog ? asset('storage/' . $blog->fotoBlog) : '#' }}"
+                                <img id="previewImg" src="{{ $blog->fotoBlog ? storage_url($blog->fotoBlog) : '#' }}"
                                     class="w-full h-full object-cover {{ $blog->fotoBlog ? '' : 'hidden' }}">
                                 <div id="placeholderIcon" class="text-center text-gray-300 group-hover:text-gray-400 {{ $blog->fotoBlog ? 'hidden' : '' }}">
                                     <i class="fa-solid fa-camera text-3xl mb-1"></i>

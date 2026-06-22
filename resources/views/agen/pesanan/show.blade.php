@@ -394,7 +394,7 @@
                         <div class="flex items-center gap-3 md:gap-4 py-4 first:pt-0 last:pb-0">
                             <div class="w-12 h-12 md:w-14 md:h-14 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center p-1 shrink-0">
                                 @if($detail->produk && $detail->produk->fotoProduk)
-                                    <img src="{{ asset('storage/' . $detail->produk->fotoProduk) }}" class="w-full h-full object-cover">
+                                    <img src="{{ storage_url($detail->produk->fotoProduk) }}" class="w-full h-full object-cover">
                                 @else
                                     <i class="fa-solid fa-image text-xl text-gray-300"></i>
                                 @endif

@@ -14,14 +14,14 @@
     <div class="bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="100">
         @if($blog->fotoBlog)
             <div class="w-full h-64 md:h-100 overflow-hidden" data-aos="fade-down" data-aos-delay="200">
-                <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover">
+                <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover">
             </div>
         @endif
 
         <div class="p-6 md:p-10 lg:p-12">
             <div class="flex items-center gap-3 mb-8">
                 <div class="w-10 h-10 rounded-full border border-gray-100 overflow-hidden shadow-sm">
-                    <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover rounded-full">
+                    <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover rounded-full">
                 </div>
                 <div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Tanggal Upload</p>

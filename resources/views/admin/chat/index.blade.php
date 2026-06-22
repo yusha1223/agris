@@ -80,7 +80,7 @@
 
                                 <div :class="chat.id_penerima == 'GLOBAL' ? 'bg-amber-400 text-amber-950 order-2 rounded-2xl' : (chat.id_pengirim == @js(Auth::id()) ? 'bg-green-600 text-white rounded-tr-none order-2' : 'bg-white text-slate-700 border-none rounded-tl-none order-2')" class="px-4 py-3 rounded-3xl shadow-sm">
                                     <div v-if="chat.foto_chat" class="mb-2 rounded-xl overflow-hidden">
-                                        <img :src="chat.foto_chat.startsWith('http') ? chat.foto_chat : '/' + chat.foto_chat.replace(/^\/?(storage\/)?/, 'storage/')" class="w-full max-h-96 object-cover">
+                                        <img :src="chat.foto_chat_url || chat.foto_chat" class="w-full max-h-96 object-cover">
                                     </div>
                                     <p class="text-sm font-medium">@{{ chat.pesan }}</p>
                                     <div class="flex justify-end items-center gap-1.5 mt-1 text-[9px] font-bold opacity-80">
@@ -131,12 +131,11 @@
     createApp({
         setup() {
             const users = ref(@js($users).map(u => {
-                let cleanedPath = u.fotoProfil ? '/' + u.fotoProfil.replace(/^\/?(storage\/)?/, 'storage/') : '';
                 return {
                     id: u.id,
                     namaLengkap: u.namaLengkap || 'Agen',
                     isActive: u.isActive,
-                    fotoProfil: u.fotoProfil ? cleanedPath : `https://ui-avatars.com/api/?name=${encodeURIComponent(u.namaLengkap || 'U')}&background=dcfce7&color=15803d`
+                    fotoProfil: u.fotoProfilUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.namaLengkap || 'U')}&background=dcfce7&color=15803d`
                 };
             }));
             const chats = ref([]);

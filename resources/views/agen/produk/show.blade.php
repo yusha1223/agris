@@ -16,7 +16,7 @@
             <div class="p-6 md:p-10 bg-gray-50 flex items-center justify-center" data-aos="fade-right" data-aos-delay="200">
                 <div class="relative w-auto rounded-2xl overflow-hidden shadow-lg bg-white">
                     @if($item->fotoProduk)
-                        <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-full max-h-125 object-cover transition duration-500" alt="{{ $item->namaProduk }}">
+                        <img src="{{ storage_url($item->fotoProduk) }}" class="w-full h-full max-h-125 object-cover transition duration-500" alt="{{ $item->namaProduk }}">
                     @else
                         <div class="flex flex-col items-center justify-center aspect-square text-gray-300 p-16">
                             <i class="fa-solid fa-image text-8xl mb-4"></i>

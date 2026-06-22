@@ -23,6 +23,13 @@ class Blog extends Model
         'tanggalBlog' => 'date',
     ];
 
+    protected $appends = ['fotoBlogUrl'];
+
+    public function getFotoBlogUrlAttribute(): ?string
+    {
+        return $this->fotoBlog ? storage_url($this->fotoBlog) : null;
+    }
+
     protected static function booted()
     {
         static::saved(function ($blog) {

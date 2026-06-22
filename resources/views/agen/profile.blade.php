@@ -22,7 +22,7 @@
                 <div class="p-6 flex flex-col lg:flex-row gap-8">
                     <div class="w-full lg:w-1/4 flex flex-col items-center">
                         <div class="group relative w-40 h-40 rounded-full overflow-hidden shadow-md bg-gray-50 border-2 border-white">
-                            <img id="previewFoto" src="{{ $user->fotoProfil ? asset($user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($user->namaLengkap ?? 'User') }}" class="w-full h-full object-cover">
+                            <img id="previewFoto" src="{{ $user->fotoProfil ? storage_url($user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($user->namaLengkap ?? 'User') }}" class="w-full h-full object-cover">
                             <label for="fotoProfil" id="overlayFoto" class="hidden absolute inset-0 bg-black/40 items-center justify-center cursor-pointer transition">
                                 <i class="fas fa-camera text-white text-2xl"></i>
                             </label>

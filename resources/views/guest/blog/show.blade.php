@@ -19,14 +19,14 @@
         <div class="bg-white rounded-[48px] border border-gray-100 shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="100">
             @if($blog->fotoBlog)
                 <div class="w-full aspect-video max-h-112.5 overflow-hidden bg-gray-50">
-                    <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover">
+                    <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover">
                 </div>
             @endif
 
             <div class="p-12">
                 <div class="flex items-center gap-4 mb-8">
                     <div class="w-12 h-12 rounded-full border border-gray-100 bg-gray-50 shadow-sm overflow-hidden shrink-0">
-                        <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover rounded-full">
+                        <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover rounded-full">
                     </div>
                     <div>
                         <h4 class="font-bold text-gray-900">{{ $blog->user->name ?? $blog->user->username ?? 'Admin' }}</h4>

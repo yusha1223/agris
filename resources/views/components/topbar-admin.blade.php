@@ -37,7 +37,7 @@
                 <button id="dropdownBtn" type="button"
                     class="flex items-center gap-3 rounded-full bg-green-600/70 p-1 pr-4 transition-all hover:bg-green-600/60 focus:outline-none">
                     <div class="h-9 w-9 overflow-hidden rounded-full border-2 border-white pointer-events-none">
-                        <img src="{{ auth()->user()->fotoProfil ? asset(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->username) }}"
+                        <img src="{{ auth()->user()->fotoProfil ? storage_url(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->username) }}"
                             class="h-full w-full object-cover">
                     </div>
                     <div class="flex items-center gap-2 pointer-events-none text-white">

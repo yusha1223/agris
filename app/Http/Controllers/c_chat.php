@@ -91,7 +91,7 @@ class c_chat extends Controller
             ]);
 
             $broadcastData = $chat->toArray();
-            $broadcastData['foto_chat'] = $chat->foto_chat ? asset('storage/' . $chat->foto_chat) : null;
+            $broadcastData['foto_chat'] = $chat->foto_chat ? storage_url($chat->foto_chat) : null;
 
             broadcast(new MessageSent($broadcastData, false))->toOthers();
 
@@ -108,7 +108,13 @@ class c_chat extends Controller
             $chat = Chat::whereId($id)->whereIdPengirim(Auth::id())->firstOrFail();
             broadcast(new MessageSent(['id' => $chat->id, 'id_penerima' => $chat->id_penerima, 'id_pengirim' => $chat->id_pengirim], true))->toOthers();
             if ($chat->foto_chat) {
-                Storage::disk('public')->delete($chat->foto_chat);
+                $cleanOldPath = ltrim(str_replace('storage/', '', $chat->foto_chat), '/');
+                if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                    Storage::disk('local_public')->delete($cleanOldPath);
+                }
+                if (Storage::disk('public')->exists($cleanOldPath)) {
+                    Storage::disk('public')->delete($cleanOldPath);
+                }
             }
             Chat::whereId($chat->id)->delete();
             return response()->json(['success' => true]);

@@ -20,6 +20,13 @@ class Produk extends Model
         'stok'  => 'integer',
     ];
 
+    protected $appends = ['fotoProdukUrl'];
+
+    public function getFotoProdukUrlAttribute(): ?string
+    {
+        return $this->fotoProduk ? storage_url($this->fotoProduk) : null;
+    }
+
     protected static function booted()
     {
         static::saved(function ($produk) {

@@ -171,8 +171,14 @@ class c_produk extends Controller
             $data['kategoriId'] = $kategori->id;
 
             if ($request->hasFile('fotoProduk')) {
-                if ($produk->fotoProduk && Storage::disk('public')->exists($produk->fotoProduk)) {
-                    Storage::disk('public')->delete($produk->fotoProduk);
+                if ($produk->fotoProduk) {
+                    $cleanOldPath = ltrim(str_replace('storage/', '', $produk->fotoProduk), '/');
+                    if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                        Storage::disk('local_public')->delete($cleanOldPath);
+                    }
+                    if (Storage::disk('public')->exists($cleanOldPath)) {
+                        Storage::disk('public')->delete($cleanOldPath);
+                    }
                 }
                 $path = $request->file('fotoProduk')->store('produk', 'public');
                 $data['fotoProduk'] = $path;
@@ -215,8 +221,14 @@ class c_produk extends Controller
     {
         $produk = Produk::onlyTrashed()->findOrFail($id);
 
-        if ($produk->fotoProduk && Storage::disk('public')->exists($produk->fotoProduk)) {
-            Storage::disk('public')->delete($produk->fotoProduk);
+        if ($produk->fotoProduk) {
+            $cleanOldPath = ltrim(str_replace('storage/', '', $produk->fotoProduk), '/');
+            if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                Storage::disk('local_public')->delete($cleanOldPath);
+            }
+            if (Storage::disk('public')->exists($cleanOldPath)) {
+                Storage::disk('public')->delete($cleanOldPath);
+            }
         }
 
         $produk->forceDelete();

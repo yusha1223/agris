@@ -62,7 +62,7 @@
                 <div>
                     <h3 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Profil Agen</h3>
                     <div class="flex flex-col md:flex-row gap-6 p-6 bg-gray-50 rounded-3xl border border-gray-100">
-                        <img src="{{ $kemitraan->user->fotoProfil ? asset($kemitraan->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($kemitraan->user->namaLengkap).'&background=58CC02&color=fff' }}"
+                        <img src="{{ $kemitraan->user->fotoProfil ? storage_url($kemitraan->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode($kemitraan->user->namaLengkap).'&background=58CC02&color=fff' }}"
                             class="w-24 h-24 rounded-2xl object-cover shadow-sm self-center md:self-start"
                             alt="Foto Profil">
                         <div class="space-y-4 flex-1">

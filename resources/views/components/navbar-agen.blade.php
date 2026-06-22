@@ -42,7 +42,7 @@
                 <div class="relative hidden md:block">
                     <button id="dropdownBtn" type="button" class="group flex items-center gap-3 rounded-full bg-green-600/50 p-1 pr-4 transition-all hover:bg-white/20 focus:outline-none">
                         <div class="h-9 w-9 overflow-hidden rounded-full border-2 border-white pointer-events-none">
-                            <img src="{{ auth()->user()->fotoProfil ? asset(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->namaLengkap) }}"
+                            <img src="{{ auth()->user()->fotoProfil ? storage_url(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->namaLengkap) }}"
                                 class="h-full w-full object-cover">
                         </div>
                         <div class="flex items-center gap-2 pointer-events-none text-white text-left">
@@ -94,7 +94,7 @@
         <div class="px-6 py-6 space-y-4">
             <div class="flex items-center gap-4 p-4 bg-gray-100 rounded-2xl border border-gray-100">
                 <div class="h-14 w-14 overflow-hidden rounded-full border-2 border-[#0f8629]">
-                    <img src="{{ auth()->user()->fotoProfil ? asset(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->username) }}" class="h-full w-full object-cover">
+                    <img src="{{ auth()->user()->fotoProfil ? storage_url(auth()->user()->fotoProfil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->username) }}" class="h-full w-full object-cover">
                 </div>
                 <div>
                     <h4 class="font-bold text-gray-900 text-lg">{{ auth()->user()->username }}</h4>

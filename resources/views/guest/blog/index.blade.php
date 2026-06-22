@@ -31,10 +31,10 @@
             <a href="{{ route('guest.blog.show', $blog->id) }}" class="group bg-white rounded-4xl overflow-hidden shadow-sm border border-gray-100 flex flex-col" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 <div class="relative h-64 overflow-hidden">
                     @if($blog->fotoBlog)
-                        <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     @else
                         <div class="w-full h-full bg-green-50 flex items-center justify-center text-green-200">
-                            <i class="fa-solid fa-image text-5xl"></i>
+                             <i class="fa-solid fa-image text-5xl"></i>
                         </div>
                     @endif
                     <div class="absolute top-6 left-6">
@@ -56,7 +56,7 @@
                     <div class="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
                         <div class="flex items-center gap-3">
                             <div class="h-10 w-10 overflow-hidden rounded-full border border-gray-100 bg-gray-50 shadow-sm shrink-0">
-                                <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin').'&background=f0fdf4&color=166534' }}" class="h-full w-full object-cover">
+                                <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin').'&background=f0fdf4&color=166534' }}" class="h-full w-full object-cover">
                             </div>
                             <span class="text-sm font-bold text-slate-700">{{ $blog->user->username ?? 'Admin' }}</span>
                         </div>

@@ -59,7 +59,7 @@
                         <div class="flex items-center gap-3 md:gap-4 py-4 first:pt-0 last:pb-0">
                             <div class="w-12 h-12 md:w-14 md:h-14 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex flex-col items-center justify-center shrink-0">
                                 @if($detail->produk && $detail->produk->fotoProduk)
-                                    <img src="{{ asset('storage/' . $detail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
+                                    <img src="{{ storage_url($detail->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-xl">
                                 @else
                                     <i class="fa-regular fa-image text-base text-gray-300"></i>
                                     <span class="text-[7px] font-bold text-gray-300 mt-0.5 leading-none text-center">Gambar<br>Kosong</span>

@@ -19,7 +19,7 @@
         <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col h-full" data-aos="zoom-in" data-aos-delay="{{ ($loop->iteration - 1) * 100 }}">
             <div class="relative aspect-video w-full overflow-hidden bg-gray-50 flex items-center justify-center">
                 @if($blog->fotoBlog)
-                    <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ $blog->judulBlog }}">
+                    <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ $blog->judulBlog }}">
                 @else
                     <div class="flex items-center justify-center h-full text-gray-200">
                         <i class="fa-solid fa-image text-4xl"></i>
@@ -42,7 +42,7 @@
                 <div class="pt-4 flex items-center justify-between border-t border-gray-50 mt-auto">
                     <div class="flex items-center gap-2">
                         <div class="h-8 w-8 overflow-hidden rounded-full border-2 border-white shadow-sm bg-gray-100 shrink-0">
-                            <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
+                            <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
                         </div>
                         <div class="min-w-0">
                             <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Tanggal</p>

@@ -97,8 +97,14 @@ class c_blog extends Controller
         $blog->isiBlog = $request->isiBlog;
 
         if ($request->hasFile('fotoBlog')) {
-            if ($blog->fotoBlog && Storage::disk('public')->exists($blog->fotoBlog)) {
-                Storage::disk('public')->delete($blog->fotoBlog);
+            if ($blog->fotoBlog) {
+                $cleanOldPath = ltrim(str_replace('storage/', '', $blog->fotoBlog), '/');
+                if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                    Storage::disk('local_public')->delete($cleanOldPath);
+                }
+                if (Storage::disk('public')->exists($cleanOldPath)) {
+                    Storage::disk('public')->delete($cleanOldPath);
+                }
             }
             $path = $request->file('fotoBlog')->store('blog', 'public');
             $blog->fotoBlog = $path;
@@ -113,8 +119,14 @@ class c_blog extends Controller
     {
         $blog = Blog::findOrFail($id);
 
-        if ($blog->fotoBlog && Storage::disk('public')->exists($blog->fotoBlog)) {
-            Storage::disk('public')->delete($blog->fotoBlog);
+        if ($blog->fotoBlog) {
+            $cleanOldPath = ltrim(str_replace('storage/', '', $blog->fotoBlog), '/');
+            if (Storage::disk('local_public')->exists($cleanOldPath)) {
+                Storage::disk('local_public')->delete($cleanOldPath);
+            }
+            if (Storage::disk('public')->exists($cleanOldPath)) {
+                Storage::disk('public')->delete($cleanOldPath);
+            }
         }
 
         $blog->delete();

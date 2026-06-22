@@ -33,7 +33,7 @@
                             <div class="flex items-center gap-3">
                                 <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0">
                                     @if($item->fotoProduk)
-                                        <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-full object-cover">
+                                        <img src="{{ storage_url($item->fotoProduk) }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="flex items-center justify-center h-full text-gray-300 text-[8px]">NO IMG</div>
                                     @endif
@@ -77,7 +77,7 @@
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 rounded-2xl bg-gray-100 overflow-hidden shrink-0">
                         @if($item->fotoProduk)
-                            <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-full object-cover">
+                            <img src="{{ storage_url($item->fotoProduk) }}" class="w-full h-full object-cover">
                         @else
                             <div class="flex items-center justify-center h-full text-gray-300 text-[10px]">NO IMG</div>
                         @endif

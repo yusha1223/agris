@@ -6,7 +6,7 @@
     <div class="w-full h-screen flex flex-col bg-white relative overflow-hidden">
         <div class="h-16 md:h-17 px-4 md:px-6 flex items-center justify-between border-b border-slate-200 bg-white shrink-0 z-20">
             <div class="flex items-center gap-3 md:gap-4">
-                <img src="{{ $admin && $admin->fotoProfil ? '/' . preg_replace('/^\/?(storage\/)?/', 'storage/', $admin->fotoProfil) : 'https://ui-avatars.com/api/?name=Admin&background=15803d&color=fff' }}" class="w-10 h-10 md:w-10 md:h-10 rounded-full object-cover shadow-sm border border-slate-200">
+                <img src="{{ $admin && $admin->fotoProfil ? storage_url($admin->fotoProfil) : 'https://ui-avatars.com/api/?name=Admin&background=15803d&color=fff' }}" class="w-10 h-10 md:w-10 md:h-10 rounded-full object-cover shadow-sm border border-slate-200">
                 <div class="flex flex-col">
                     <h2 class="font-bold text-slate-800 text-xs md:uppercase leading-tight">Pusat Layanan Admin</h2>
                 </div>
@@ -31,7 +31,7 @@
                         </div>
                         <p class="text-sm text-amber-900 font-semibold">@{{ chat.pesan }}</p>
                         <div v-if="chat.foto_chat" class="mt-3 rounded-xl overflow-hidden border-none shadow-sm">
-                            <img :src="chat.foto_chat.startsWith('http') ? chat.foto_chat : '/' + chat.foto_chat.replace(/^\/?(storage\/)?/, 'storage/')" class="w-full max-h-60 object-cover">
+                            <img :src="chat.foto_chat_url || chat.foto_chat" class="w-full max-h-60 object-cover">
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
                         </div>
                         <div :class="[chat.id_pengirim == @js(Auth::id()) ? 'bg-green-600 text-white rounded-tr-none order-2' : 'bg-white text-slate-700 rounded-tl-none border-none order-2']" class="px-4 py-3 rounded-3xl shadow-sm">
                             <div v-if="chat.foto_chat" class="mb-2 rounded-lg overflow-hidden">
-                                <img :src="chat.foto_chat.startsWith('http') ? chat.foto_chat : '/' + chat.foto_chat.replace(/^\/?(storage\/)?/, 'storage/')" class="max-h-64 w-full object-cover">
+                                <img :src="chat.foto_chat_url || chat.foto_chat" class="max-h-64 w-full object-cover">
                             </div>
                             <p class="text-sm font-medium">@{{ chat.pesan }}</p>
                             <div class="flex justify-end items-center gap-1.5 mt-2 text-[9px] font-bold opacity-80">

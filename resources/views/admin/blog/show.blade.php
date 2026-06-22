@@ -25,14 +25,14 @@
     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="100">
         @if($blog->fotoBlog)
             <div class="w-full aspect-video max-h-100 overflow-hidden bg-gray-50" data-aos="fade-down" data-aos-delay="200">
-                <img src="{{ asset('storage/' . $blog->fotoBlog) }}" class="w-full h-full object-cover">
+                <img src="{{ storage_url($blog->fotoBlog) }}" class="w-full h-full object-cover">
             </div>
         @endif
 
         <div class="p-6 md:p-8">
             <div class="flex items-center gap-3 mb-6">
                 <div class="h-8 w-8 overflow-hidden rounded-full border-2 border-white shadow-sm bg-gray-100 shrink-0">
-                    <img src="{{ $blog->user && $blog->user->fotoProfil ? asset($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
+                    <img src="{{ $blog->user && $blog->user->fotoProfil ? storage_url($blog->user->fotoProfil) : 'https://ui-avatars.com/api/?name='.urlencode(($blog->user->username ?? $blog->user->email) ?? 'Admin') }}" class="h-full w-full object-cover">
                 </div>
                 <div class="min-w-0">
                     <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Tanggal Upload</p>
