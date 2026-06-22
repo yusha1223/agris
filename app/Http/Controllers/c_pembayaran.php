@@ -99,6 +99,7 @@ class c_pembayaran extends Controller
             'statusPembayaran' => $statusPembayaran,
             'transactionId' => $transactionId,
             'paymentType' => $paymentType,
+            'payment_info' => json_encode($rawData),
         ]);
 
         Pesanan::whereId($pesanan->id)->update([

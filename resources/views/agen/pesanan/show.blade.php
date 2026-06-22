@@ -34,6 +34,82 @@
             }
         }
     }
+    $isPickup = str_contains(strtolower($courierInfo), 'ambil');
+
+    $getFriendlyPaymentMethod = function($pembayaran) {
+        if (!$pembayaran) {
+            return 'Transfer Bank';
+        }
+        $type = strtolower($pembayaran->paymentType ?? '');
+        
+        $details = null;
+        if ($pembayaran->payment_info) {
+            $details = json_decode($pembayaran->payment_info, true);
+        }
+
+        if ($type === 'simulasi_midtrans') {
+            return 'Simulasi Offline';
+        }
+        
+        if ($type === 'midtrans_snap' || !$type) {
+            return 'Midtrans Online';
+        }
+
+        if ($details && isset($details['payment_type'])) {
+            $type = strtolower($details['payment_type']);
+        }
+
+        switch ($type) {
+            case 'bank_transfer':
+                if (isset($details['va_numbers'][0]['bank'])) {
+                    return 'Transfer Bank (' . strtoupper($details['va_numbers'][0]['bank']) . ')';
+                }
+                if (isset($details['permata_va_number'])) {
+                    return 'Transfer Bank (Permata)';
+                }
+                return 'Transfer Bank';
+            case 'echannel':
+                return 'Mandiri Bill Payment';
+            case 'gopay':
+                return 'GoPay';
+            case 'qris':
+                return 'QRIS';
+            case 'shopeepay':
+                return 'ShopeePay';
+            case 'akulaku':
+                return 'Akulaku';
+            case 'kredivo':
+                return 'Kredivo';
+            case 'cstore':
+                if (isset($details['store'])) {
+                    $store = strtolower($details['store']);
+                    if ($store === 'indomaret') {
+                        return 'Indomaret';
+                    }
+                    if ($store === 'alfamart') {
+                        return 'Alfamart';
+                    }
+                }
+                return 'Gerai Retail';
+            case 'credit_card':
+                return 'Kartu Kredit';
+            case 'bca_klikbca':
+                return 'KlikBCA';
+            case 'bca_klikpay':
+                return 'BCA KlikPay';
+            case 'bri_epay':
+                return 'BRImo';
+            case 'cimb_clicks':
+                return 'CIMB Clicks';
+            case 'mandiri_clickpay':
+                return 'Mandiri Clickpay';
+            default:
+                if ($details && isset($details['payment_type'])) {
+                    return strtoupper(str_replace('_', ' ', $details['payment_type']));
+                }
+                return strtoupper(str_replace('_', ' ', $pembayaran->paymentType));
+        }
+    };
 @endphp
 
 <div id="order-detail-container" class="max-w-5xl mx-auto pt-3 md:pt-5 pb-16 px-3 md:px-6">
@@ -452,7 +528,7 @@
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Kurir Pengiriman</div>
                         <span class="font-extrabold text-gray-800 text-sm uppercase">{{ $courierInfo }}</span>
                     </div>
-                    @if($noResi && !str_contains($noResi, 'AMBIL'))
+                    @if($noResi && !$isPickup && !str_contains($noResi, 'AMBIL'))
                     <div class="bg-gray-50 rounded-2xl p-3 border border-gray-100">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Nomor Resi</div>
                         <div class="flex items-center justify-between gap-2">
@@ -463,13 +539,13 @@
                         </div>
                     </div>
                     @endif
-                    @if($ongkirText)
+                    @if($ongkirText && !$isPickup)
                     <div class="bg-gray-50 rounded-2xl p-3 border border-gray-100">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Ongkos Kirim</div>
                         <span class="font-extrabold text-gray-800 text-sm">{{ $ongkirText }}</span>
                     </div>
                     @endif
-                    @if($noResi && !str_contains($noResi, 'AMBIL'))
+                    @if($noResi && !$isPickup && !str_contains($noResi, 'AMBIL'))
                     <a href="{{ route('agen.pesanan.lacak', $pesanan->id) }}" target="_blank" class="block w-full bg-blue-50 hover:bg-blue-100 text-blue-600 py-2.5 rounded-2xl font-black text-xs flex items-center justify-center gap-2 transition border border-blue-100 cursor-pointer">
                         <i class="fa-solid fa-map-location-dot"></i> Lacak Pengiriman{{ $biteshipOrderId ? '' : '' }}
                     </a>
@@ -487,31 +563,13 @@
                         <span class="text-gray-400 font-semibold">Tanggal Transaksi</span>
                         <span class="text-gray-700 font-extrabold">{{ \Carbon\Carbon::parse($pesanan->created_at)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i') }} WIB</span>
                     </div>
-                    @if($pembayaran && $pembayaran->waktuDibayar)
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400 font-semibold">Tanggal Pembayaran</span>
-                            <span class="text-gray-700 font-extrabold">{{ \Carbon\Carbon::parse($pembayaran->waktuDibayar)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i') }} WIB</span>
-                        </div>
-                    @endif
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400 font-semibold">Pilihan Metode Pembayaran</span>
                         <span class="text-gray-700 font-black uppercase text-right">
-                            @if($pembayaran)
-                                @php
-                                    $type = strtolower($pembayaran->paymentType ?? '');
-                                    if ($type === 'midtrans_snap' || $type === 'simulasi_midtrans' || !$type) {
-                                        $displayMethod = 'MIDTRANS ONLINE';
-                                    } else {
-                                        $displayMethod = strtoupper(str_replace('_', ' ', $pembayaran->paymentType));
-                                    }
-                                @endphp
-                                {{ $displayMethod }}
-                            @else
-                                Transfer
-                            @endif
+                            {{ $getFriendlyPaymentMethod($pembayaran) }}
                         </span>
                     </div>
-                    @if($noResi)
+                    @if($noResi && !$isPickup && !str_contains($noResi, 'AMBIL'))
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400 font-semibold">No Resi</span>
                             <span class="text-gray-700 font-mono font-bold select-all bg-gray-50 px-1.5 py-0.5 rounded border border-gray-150">{{ $noResi }}</span>
