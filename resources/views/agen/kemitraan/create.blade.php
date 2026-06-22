@@ -3,7 +3,7 @@
 @section('title', 'Upload MOU Kemitraan - AGRIS')
 
 @section('content')
-<div class="max-w-4xl mx-auto pt-5 pb-12 px-6">
+<div class="max-w-4xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     @if($kemitraan)
     @php
         $steps = [

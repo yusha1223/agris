@@ -3,7 +3,7 @@
 @section('title', 'Detail Blog - AGRIS')
 
 @section('content')
-<div class="max-w-5xl mx-auto pt-5 pb-12 px-1">
+<div class="max-w-5xl mx-auto pt-3 md:pt-5 pb-12 px-1">
     <div class="mb-6 flex items-center gap-4" data-aos="fade-up">
         <a href="{{ route('agen.blog.index') }}" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 bg-white shadow-sm transition-all">
             <i class="fa-solid fa-arrow-left text-sm"></i>

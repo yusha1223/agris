@@ -1,7 +1,7 @@
 @extends('layouts.agen')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-5 pb-12 px-6">
+<div class="max-w-7xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 space-y-6" data-aos="fade-right">
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

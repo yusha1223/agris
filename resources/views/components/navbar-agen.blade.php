@@ -141,7 +141,7 @@
 </nav>
 
 @if(!$isChatRoute)
-    <div class="h-20 md:h-28"></div>
+    <div class="h-[72px] md:h-28"></div>
 @endif
 
 <x-modal id="logoutModal" title="Konfirmasi Logout" message="Apakah Anda yakin ingin keluar?" confirmText="Iya" cancelText="Batal" confirmId="confirmLogoutBtn" cancelId="closeLogoutBtn" />

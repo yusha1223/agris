@@ -3,7 +3,7 @@
 @section('title', 'Status Kemitraan - AGRIS')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-5 pb-12 px-6">
+<div class="max-w-7xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="mb-8" data-aos="fade-up">
         <h1 class="text-2xl font-bold text-gray-800">Status Kemitraan Agen</h1>
         <p class="text-gray-500 text-sm">Pantau sejauh mana proses pengajuan kemitraan Anda.</p>

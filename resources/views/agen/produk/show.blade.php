@@ -3,7 +3,7 @@
 @section('title', $item->namaProduk . ' - Detail Produk')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-5 pb-12 px-6">
+<div class="max-w-7xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="flex items-center gap-3 pb-5" data-aos="fade-up">
         <a href="{{ route('agen.produk.index') }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition shadow-sm">
             <i class="fa-solid fa-arrow-left"></i>

@@ -36,7 +36,7 @@
     }
 @endphp
 
-<div id="order-detail-container" class="max-w-5xl mx-auto pb-16 px-6 pt-5">
+<div id="order-detail-container" class="max-w-5xl mx-auto pt-3 md:pt-5 pb-16 px-3 md:px-6">
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-aos="fade-up">
         <div>
             <a href="{{ route('agen.pesanan.index') }}" class="text-xs font-bold text-gray-400 hover:text-gray-600 flex items-center gap-1.5 mb-2 uppercase tracking-wider transition-colors">

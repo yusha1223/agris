@@ -3,7 +3,7 @@
 @section('title', 'Keranjang - AGRIS')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-5 pb-12 px-6">
+<div class="max-w-7xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4" data-aos="fade-up">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Keranjang</h1>
@@ -78,25 +78,27 @@
             </table>
         </div>
 
-        <div class="md:hidden space-y-4 p-4 bg-gray-50/50">
+        <div class="md:hidden space-y-4 p-3 bg-gray-50/50">
             @foreach($keranjangs as $item)
-            <div class="keranjang-item p-4 bg-white rounded-2xl border border-gray-100 shadow-xs grid grid-cols-[auto_auto_1fr] gap-3.5 items-center"
+            <div class="keranjang-item p-3 bg-white rounded-2xl border border-gray-100 shadow-xs grid grid-cols-[auto_1fr] gap-3 items-center"
                  data-id="{{ $item->id }}"
                  data-harga="{{ $item->produk->harga }}"
                  data-karung="{{ $item->produk->kategori->karung }}">
-                <div class="shrink-0 flex items-center justify-center">
+                <!-- Column 1: Checkbox & Image -->
+                <div class="flex items-center gap-2.5 shrink-0">
                     <input type="checkbox"
                         class="item-checkbox w-5 h-5 rounded accent-[#58CC02] cursor-pointer"
                         onchange="syncCheckbox(this)"
                         data-id="{{ $item->id }}">
+                    <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
+                        @if($item->produk->fotoProduk)
+                            <img src="{{ asset('storage/' . $item->produk->fotoProduk) }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center"><i class="fa-solid fa-image text-lg text-gray-200"></i></div>
+                        @endif
+                    </div>
                 </div>
-                <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
-                    @if($item->produk->fotoProduk)
-                        <img src="{{ asset('storage/' . $item->produk->fotoProduk) }}" class="w-full h-full object-cover">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center"><i class="fa-solid fa-image text-lg text-gray-200"></i></div>
-                    @endif
-                </div>
+                <!-- Column 2: Details -->
                 <div class="min-w-0 flex flex-col gap-2">
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
@@ -107,15 +109,15 @@
                             <i class="fa-solid fa-trash-can text-sm"></i>
                         </button>
                     </div>
-                    <div class="flex items-end justify-between gap-2 mt-1">
-                        <div class="flex flex-col">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mt-1">
+                        <div class="flex flex-col min-w-0">
                             <span class="text-[10px] text-gray-400 font-bold">Harga: Rp {{ number_format($item->produk->harga, 0, ',', '.') }}</span>
                             <span class="font-black text-[#0f8629] text-sm subtotal-val mt-0.5">Rp {{ number_format($item->produk->harga * $item->jumlah, 0, ',', '.') }}</span>
                         </div>
-                        <div class="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-lg p-0.5 shrink-0">
-                            <button onclick="triggerKurang('{{ $item->id }}')" class="w-6.5 h-6.5 bg-white border border-gray-200 rounded-md text-xs font-bold hover:bg-gray-100 flex items-center justify-center shadow-2xs transition-colors">-</button>
-                            <input type="number" min="1" value="{{ $item->jumlah }}" class="jumlah-val w-9 text-center border-none bg-transparent focus:ring-0 text-xs font-extrabold p-0" onchange="triggerUpdateInput(this, '{{ $item->id }}')">
-                            <button onclick="tambahJumlah('{{ $item->id }}')" class="w-6.5 h-6.5 bg-[#58CC02] text-white rounded-md text-xs font-bold hover:bg-[#46A302] flex items-center justify-center shadow-2xs transition-colors">+</button>
+                        <div class="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-lg p-0.5 shrink-0 ml-auto">
+                            <button onclick="triggerKurang('{{ $item->id }}')" class="w-7 h-7 bg-white border border-gray-200 rounded-md text-xs font-bold hover:bg-gray-100 flex items-center justify-center shadow-2xs transition-colors">-</button>
+                            <input type="number" min="1" value="{{ $item->jumlah }}" class="jumlah-val w-8 text-center border-none bg-transparent focus:ring-0 text-xs font-extrabold p-0" onchange="triggerUpdateInput(this, '{{ $item->id }}')">
+                            <button onclick="tambahJumlah('{{ $item->id }}')" class="w-7 h-7 bg-[#58CC02] text-white rounded-md text-xs font-bold hover:bg-[#46A302] flex items-center justify-center shadow-2xs transition-colors">+</button>
                         </div>
                     </div>
                 </div>

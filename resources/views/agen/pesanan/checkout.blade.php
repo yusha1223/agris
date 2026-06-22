@@ -5,7 +5,7 @@
 @section('content')
 <script src="{{ config('services.midtrans.is_production', false) ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}" data-client-key="{{ $midtransClientKey }}"></script>
 
-<div class="max-w-6xl mx-auto pt-6 pb-20 px-4 sm:px-6">
+<div class="max-w-6xl mx-auto pt-3 md:pt-6 pb-20 px-3 md:px-6">
 
     <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>

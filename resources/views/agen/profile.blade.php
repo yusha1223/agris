@@ -3,7 +3,7 @@
 @section('title', 'Profil Agen - AGRIS')
 
 @section('content')
-<div class="max-w-full mx-auto py-5 px-6">
+<div class="max-w-full mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="flex flex-col lg:flex-row gap-4 items-start" data-aos="fade-up">
         <form action="{{ route('agen.profile.update') }}" method="POST" enctype="multipart/form-data" id="formProfile" class="flex-1 w-full">
             @csrf

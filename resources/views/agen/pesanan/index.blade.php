@@ -3,7 +3,7 @@
 @section('title', 'Riwayat Transaksi - AGRIS')
 
 @section('content')
-<div class="max-w-5xl mx-auto pt-5 pb-12 px-4 sm:px-6">
+<div class="max-w-5xl mx-auto pt-3 md:pt-5 pb-12 px-3 md:px-6">
     <div class="mb-8" data-aos="fade-up">
         <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Daftar Transaksi</h1>
         <p class="text-gray-500 text-xs md:text-sm mt-1">Pantau status pesanan dan riwayat belanja Anda dengan mudah</p>
