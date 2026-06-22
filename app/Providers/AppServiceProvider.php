@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Kemitraan;
@@ -20,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Force HTTPS pada production (Railway reverse proxy)
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         Kemitraan::observe(KemitraanObserver::class);
 
         View::composer('*', function ($view) {
