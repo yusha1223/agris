@@ -95,7 +95,7 @@
             @endforeach
         </nav>
 
-        <div class="p-4 border-t border-white/10 md:hidden relative z-50">
+        <div class="p-4 pb-20 border-t border-white/10 md:hidden relative z-50">
             <a href="{{ route('admin.profile') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white transition-all">
                 <i class="fa-solid fa-user-gear w-5 text-center"></i>
                 <span>Profil Saya</span>
