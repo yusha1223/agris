@@ -45,7 +45,7 @@
 
 <x-navbar/>
 
-<section id="home" class="relative min-h-screen shrink-0 flex items-center overflow-hidden">
+<section id="home" class="relative min-h-screen shrink-0 flex items-center overflow-hidden pt-20 md:pt-24">
     <div class="absolute inset-0 z-0">
         <img src="{{ asset('images/about.svg') }}" class="w-full h-full object-cover" alt="Background">
         <div class="absolute inset-0 bg-black/50 bg-opacity-40 backdrop-blur-sm"></div>

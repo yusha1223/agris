@@ -44,10 +44,10 @@
 
     <div id="mobile-menu" class="hidden md:hidden bg-[#0B2B26] border-t border-white/10 absolute w-full left-0">
         <div class="px-6 pt-6 pb-12 space-y-5 font-medium text-gray-300">
-            <a href="#home" class="block hover:text-white transition border-b border-white/5 pb-3">Beranda</a>
-            <a href="#about" class="block hover:text-white transition border-b border-white/5 pb-3">Tentang</a>
-            <a href="#produk" class="block hover:text-white transition border-b border-white/5 pb-3">Blog</a>
-            <a href="#kontak" class="block hover:text-white transition border-b border-white/5 pb-3">Kontak</a>
+            <a href="{{ route('landing') }}" class="block hover:text-white transition border-b border-white/5 pb-3">Beranda</a>
+            <a href="{{ route('about') }}" class="block hover:text-white transition border-b border-white/5 pb-3">Tentang</a>
+            <a href="{{ route('guest.blog.index') }}" class="block hover:text-white transition border-b border-white/5 pb-3">Blog</a>
+            <a href="{{ route('contact') }}" class="block hover:text-white transition border-b border-white/5 pb-3">Kontak</a>
             <div class="pt-6 grid grid-cols-2 gap-4">
                 <a href="{{ route('login') }}" class="flex items-center justify-center py-3 rounded-xl border border-white/20 text-white font-bold hover:bg-white/5">
                     Login
@@ -61,7 +61,7 @@
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    function initNavbar() {
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -83,5 +83,11 @@
                 navbar.classList.replace('bg-[#0f8629]', 'bg-[#0f8629]/60');
             }
         });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNavbar);
+    } else {
+        initNavbar();
+    }
 </script>
