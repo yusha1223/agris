@@ -38,7 +38,19 @@ if (!function_exists('storage_url')) {
 
         // Otherwise, resolve via the 'public' disk (which is configured for Cloudinary)
         try {
-            return Storage::disk('public')->url($clean);
+            $url = Storage::disk('public')->url($clean);
+            if (str_contains($url, 'res.cloudinary.com')) {
+                $parts = explode('?', $url, 2);
+                $pathPart = $parts[0];
+                $queryPart = isset($parts[1]) ? '?' . $parts[1] : '';
+
+                $ext = pathinfo($clean, PATHINFO_EXTENSION);
+                if ($ext && !str_ends_with($pathPart, '.' . $ext . '.' . $ext)) {
+                    $pathPart .= '.' . $ext;
+                }
+                return $pathPart . $queryPart;
+            }
+            return $url;
         } catch (\Exception $e) {
             Log::warning('Cloudinary URL generation failed for path: ' . $clean . '. Error: ' . $e->getMessage());
             return asset('storage/' . $clean);
