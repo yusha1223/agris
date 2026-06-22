@@ -186,7 +186,7 @@
                             <span class="text-[9px] text-gray-400 font-black uppercase tracking-wider block mb-0.5">Pelanggan</span>
                             <div class="flex flex-col">
                                 <span class="font-bold text-gray-800 text-xs">{{ $pesanan->user->namaLengkap ?? 'Dihapus' }}</span>
-                                <span class="text-[10px] text-gray-400">@{{ $pesanan->user->username ?? 'user' }}</span>
+                                <span class="text-[10px] text-gray-400">{{ '@' . ($pesanan->user->username ?? 'user') }}</span>
                             </div>
                         </div>
                         <div>

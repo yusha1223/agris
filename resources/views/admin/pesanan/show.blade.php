@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Detail Transaksi #' . $pesanan->id . ' - Admin AGRIS')
+@section('title', 'Detail Transaksi - Admin AGRIS')
 
 @section('content')
 @php
@@ -471,10 +471,7 @@
                                     {{ $displayMethod }}
                                 </span>
                             </div>
-                            <div>
-                                <span class="block font-sans uppercase font-black text-[9px]">ID Transaksi</span>
-                                <span class="text-gray-500 select-all font-bold break-all">{{ $pesanan->pembayaran->transactionId ?? '-' }}</span>
-                            </div>
+
                         </div>
                     </div>
                 @else
