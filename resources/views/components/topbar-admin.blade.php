@@ -26,6 +26,13 @@
                 </span>
             </a>
 
+            {{-- Tombol Logout khusus Mobile (selalu tampil) --}}
+            <button id="logoutBtnMobileTopbar" type="button"
+                class="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-red-500/80 text-white hover:bg-red-600 transition-all"
+                title="Logout">
+                <i class="fa-solid fa-right-from-bracket text-lg"></i>
+            </button>
+
             <div class="relative hidden md:block">
                 <button id="dropdownBtn" type="button"
                     class="flex items-center gap-3 rounded-full bg-green-600/70 p-1 pr-4 transition-all hover:bg-green-600/60 focus:outline-none">
@@ -153,6 +160,15 @@
 
         if (logoutTrigger) {
             logoutTrigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (typeof openModal === 'function') openModal('logoutModal');
+            });
+        }
+
+        // Tombol logout mobile di topbar
+        const logoutMobileTopbar = document.getElementById('logoutBtnMobileTopbar');
+        if (logoutMobileTopbar) {
+            logoutMobileTopbar.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (typeof openModal === 'function') openModal('logoutModal');
             });
