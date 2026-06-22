@@ -45,7 +45,7 @@
 
 <x-navbar/>
 
-<section id="home" class="relative min-h-screen shrink-0 flex items-center overflow-hidden pt-20 md:pt-24">
+<section id="home" class="relative min-h-screen shrink-0 flex items-center overflow-hidden pt-20 pb-16 md:pt-24 md:pb-0">
     <div class="absolute inset-0 z-0">
         <img src="{{ asset('images/about.svg') }}" class="w-full h-full object-cover" alt="Background">
         <div class="absolute inset-0 bg-black/50 bg-opacity-40 backdrop-blur-sm"></div>
@@ -65,7 +65,7 @@
                     <a href="{{ route('login') }}" class="px-8 py-4 bg-green-700 text-white font-bold rounded-2xl shadow-xl hover:bg-green-600 transition duration-300 text-center">
                         Mulai Sekarang
                     </a>
-                    <a href="{{ route('about') }}" class="px-8 py-4 border-2 border-white border-opacity-30 backdrop-blur-sm text-white rounded-2xl font-bold hover:bg-white/50 transition mb-10 duration-300 text-center">
+                    <a href="{{ route('about') }}" class="px-8 py-4 border-2 border-white border-opacity-30 backdrop-blur-sm text-white rounded-2xl font-bold hover:bg-white/50 transition duration-300 text-center">
                         Tentang Kami
                     </a>
                 </div>
