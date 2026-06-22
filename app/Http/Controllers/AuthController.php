@@ -161,7 +161,7 @@ class AuthController extends Controller
                     'namaLengkap' => $googleUser->getName(),
                     'email'       => $googleUser->getEmail(),
                     'password'    => Hash::make(Str::random(24)),
-                    'noTelp'      => 'g' . Str::random(11),
+                    'noTelp'      => null,
                     'isAdmin'     => false,
                     'isActive'    => true,
                 ]);
