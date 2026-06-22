@@ -163,7 +163,7 @@ class AuthController extends Controller
                     'password'    => Hash::make(Str::random(24)),
                     'noTelp'      => null,
                     'isAdmin'     => false,
-                    'isActive'    => true,
+                    'isActive'    => false,
                 ]);
             }
 
