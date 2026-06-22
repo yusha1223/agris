@@ -86,25 +86,27 @@
 <x-modal id="modalKonfirmasiBlog" title="Konfirmasi" message="Yakin ingin menambahkan blog?" confirmText="Iya" cancelText="Batal" confirmId="btnSubmitForm" cancelId="btnCloseModal" />
 
 <script>
-    if (typeof window.initImageCropper === 'function') {
-        window.initImageCropper({
-            inputSelector: '#fotoInput',
-            previewSelector: '#previewImg',
-            aspectRatio: 16 / 9,
-            onCropped: function() {
-                const container = document.getElementById('imageContainer');
-                const preview = document.getElementById('previewImg');
-                const icon = document.getElementById('placeholderIcon');
-                const errorDiv = document.getElementById('clientError');
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof window.initImageCropper === 'function') {
+            window.initImageCropper({
+                inputSelector: '#fotoInput',
+                previewSelector: '#previewImg',
+                aspectRatio: 16 / 9,
+                onCropped: function() {
+                    const container = document.getElementById('imageContainer');
+                    const preview = document.getElementById('previewImg');
+                    const icon = document.getElementById('placeholderIcon');
+                    const errorDiv = document.getElementById('clientError');
 
-                errorDiv.classList.add('hidden');
-                preview.classList.remove('hidden');
-                icon.classList.add('hidden');
-                container.classList.remove('border-dashed');
-                container.classList.add('border-solid', 'border-[#58CC02]');
-            }
-        });
-    }
+                    errorDiv.classList.add('hidden');
+                    preview.classList.remove('hidden');
+                    icon.classList.add('hidden');
+                    container.classList.remove('border-dashed');
+                    container.classList.add('border-solid', 'border-[#58CC02]');
+                }
+            });
+        }
+    });
 
     document.getElementById('btnSubmitForm').addEventListener('click', () => {
         document.getElementById('formBlog').submit();

@@ -186,19 +186,21 @@
         el.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';
     }
 
-    if (typeof window.initImageCropper === 'function') {
-        window.initImageCropper({
-            inputSelector: '#fotoInput',
-            previewSelector: '#previewImg',
-            aspectRatio: 1,
-            onCropped: function() {
-                const preview = document.getElementById('previewImg');
-                const icon = document.getElementById('placeholderIcon');
-                preview.classList.remove('hidden');
-                icon.classList.add('hidden');
-            }
-        });
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof window.initImageCropper === 'function') {
+            window.initImageCropper({
+                inputSelector: '#fotoInput',
+                previewSelector: '#previewImg',
+                aspectRatio: 1,
+                onCropped: function() {
+                    const preview = document.getElementById('previewImg');
+                    const icon = document.getElementById('placeholderIcon');
+                    preview.classList.remove('hidden');
+                    icon.classList.add('hidden');
+                }
+            });
+        }
+    });
 
     document.getElementById('btnSubmitForm').addEventListener('click', () => {
         document.getElementById('formProduk').submit();
