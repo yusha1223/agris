@@ -2,34 +2,33 @@
 
 namespace App\Events;
 
+use App\Models\Blog;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class KemitraanUpdated implements ShouldBroadcastNow
+class BlogUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $id;
-    public $status;
+    public $blog;
 
-    public function __construct($id, $status)
+    public function __construct(Blog $blog)
     {
-        $this->id = $id;
-        $this->status = $status;
+        $this->blog = $blog;
     }
 
     public function broadcastOn(): array
     {
         return [
-            new Channel('kemitraan-status'),
+            new Channel('blog-channel'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'KemitraanUpdated';
+        return 'BlogUpdated';
     }
 }

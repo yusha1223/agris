@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+    <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @forelse($blogs as $blog)
         <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm flex flex-col border border-gray-100 hover:shadow-lg hover:shadow-gray-200/40 transition-all duration-300" data-aos="zoom-in" data-aos-delay="{{ ($loop->iteration - 1) * 100 }}">
             <a href="{{ route('agen.blog.show', $blog->id) }}" class="absolute inset-0 z-20" aria-label="Baca {{ $blog->judulBlog }}"></a>
@@ -67,4 +67,25 @@
         {{ $blogs->links() }}
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.Echo) {
+        window.Echo.channel('blog-channel')
+            .listen('.BlogUpdated', (e) => {
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newGrid = doc.getElementById('blog-grid');
+                        const oldGrid = document.getElementById('blog-grid');
+                        if (newGrid && oldGrid) {
+                            oldGrid.innerHTML = newGrid.innerHTML;
+                        }
+                    })
+                    .catch(err => console.error('Error fetching blog grid:', err));
+            });
+    }
+});
+</script>
 @endsection

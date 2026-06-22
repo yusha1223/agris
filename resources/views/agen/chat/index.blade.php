@@ -2,8 +2,8 @@
 @section('title', 'Chat - AGRIS')
 
 @section('content')
-<div class="bg-slate-100 md:flex flex-col justify-center items-center" id="chat-app" v-cloak>
-    <div class="w-full h-screen px-2 md:flex flex-col bg-white relative overflow-hidden">
+<div class="bg-slate-100 flex flex-col justify-center items-center" id="chat-app" v-cloak>
+    <div class="w-full h-[calc(100dvh-72px)] md:h-[calc(100dvh-116px)] px-2 flex flex-col bg-white relative overflow-hidden">
         <div class="h-16 md:h-17 px-4 md:px-6 flex items-center justify-between border-b border-slate-200 bg-white shrink-0 z-20">
             <div class="flex items-center gap-3 md:gap-4">
                 <img src="{{ $admin && $admin->fotoProfil ? '/' . preg_replace('/^\/?(storage\/)?/', 'storage/', $admin->fotoProfil) : 'https://ui-avatars.com/api/?name=Admin&background=15803d&color=fff' }}" class="w-10 h-10 md:w-10 md:h-10 rounded-full object-cover shadow-sm border border-slate-200">

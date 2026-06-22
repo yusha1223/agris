@@ -23,6 +23,17 @@ class Blog extends Model
         'tanggalBlog' => 'date',
     ];
 
+    protected static function booted()
+    {
+        static::saved(function ($blog) {
+            broadcast(new \App\Events\BlogUpdated($blog));
+        });
+
+        static::deleted(function ($blog) {
+            broadcast(new \App\Events\BlogUpdated($blog));
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'userId');

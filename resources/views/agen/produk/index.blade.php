@@ -54,9 +54,9 @@
         </form>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
+    <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
         @forelse($produks as $item)
-        <div id="product-card-{{ $item->id }}" class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full relative" data-aos="zoom-in" data-aos-delay="{{ ($loop->iteration - 1) * 50 }}">
+        <div id="product-card-{{ $item->id }}" class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full relative" data-aos="fade-up" data-aos-delay="{{ ($loop->iteration - 1) * 50 }}">
             <a href="{{ route('agen.produk.show', $item->id) }}" class="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
                 @if($item->fotoProduk)
                     <img src="{{ asset('storage/' . $item->fotoProduk) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="{{ $item->namaProduk }}">
@@ -198,6 +198,31 @@ if (window.Echo) {
     window.Echo.channel('produk-channel')
         .listen('.ProdukUpdated', (e) => {
             const prod = e.produk;
+
+            if (prod.deleted_at) {
+                const cardEl = document.getElementById(`product-card-${prod.id}`);
+                if (cardEl) {
+                    cardEl.remove();
+                }
+                return;
+            }
+
+            const cardEl = document.getElementById(`product-card-${prod.id}`);
+            if (!cardEl) {
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newGrid = doc.getElementById('product-grid');
+                        const oldGrid = document.getElementById('product-grid');
+                        if (newGrid && oldGrid) {
+                            oldGrid.innerHTML = newGrid.innerHTML;
+                        }
+                    })
+                    .catch(err => console.error('Error fetching new product grid:', err));
+                return;
+            }
 
             const stockEl = document.getElementById(`product-stock-${prod.id}`);
             if (stockEl) {
