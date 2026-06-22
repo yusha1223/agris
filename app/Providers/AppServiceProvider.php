@@ -10,6 +10,7 @@ use App\Models\Kemitraan;
 use App\Models\User;
 use App\Models\Chat;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
 use App\Observers\KemitraanObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,12 +32,12 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             static $admin = null;
 
-            if (is_null($admin)) {
+            if (is_null($admin) && Schema::hasTable('users')) {
                 $admin = User::isAdmin(true)->first();
             }
 
             $unreadCount = 0;
-            if (Auth::check()) {
+            if (Auth::check() && Schema::hasTable('chats')) {
                 /** @var Builder<Chat> $q */
                 $q = Chat::query()
                     ->where('id_penerima', Auth::id())
