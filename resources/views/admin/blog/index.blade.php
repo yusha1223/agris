@@ -3,13 +3,13 @@
 @section('title', 'Blog Admin - AGRIS')
 
 @section('content')
-<div class="w-full pt-2 pb-10 px-4 md:px-0">
+<div class="w-full pt-2 pb-10">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4" data-aos="fade-up">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Manajemen Blog</h1>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Manajemen Blog</h1>
             <p class="text-gray-500 text-sm">Buat dan bagikan cerita Anda</p>
         </div>
-        <a href="{{ route('admin.blog.create') }}" class="w-full md:w-auto bg-[#58CC02] hover:bg-[#46A302] text-white px-6 py-3 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 shadow-sm text-sm">
+        <a href="{{ route('admin.blog.create') }}" class="w-full md:w-auto bg-[#58CC02] hover:bg-[#46A302] text-white px-5 md:px-6 py-2.5 md:py-3 rounded-2xl font-bold transition-all flex items-center justify-center gap-2 shadow-sm text-xs md:text-sm">
             <i class="fa-solid fa-plus"></i> Buat Blog
         </a>
     </div>

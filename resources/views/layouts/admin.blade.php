@@ -48,7 +48,7 @@
 <div class="{{ !Route::is('admin.profile') ? 'md:ml-64' : '' }} transition-all duration-300">
     @include('components.topbar-admin')
 
-    <main class="pt-17 px-5 min-h-screen">
+    <main class="pt-17 px-3 md:px-6 min-h-screen">
         @yield('content')
     </main>
 </div>

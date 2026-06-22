@@ -3,9 +3,9 @@
 @section('title', 'Kemitraan Admin - AGRIS')
 
 @section('content')
-<div class="w-full pt-2 pb-10 px-4 md:px-0">
+<div class="w-full pt-2 pb-10">
     <div class="mb-8" data-aos="fade-up">
-        <h1 class="text-2xl font-bold text-gray-800">Manajemen Kemitraan</h1>
+        <h1 class="text-xl md:text-2xl font-bold text-gray-800">Manajemen Kemitraan</h1>
         <p class="text-gray-500 text-sm">Verifikasi data pengajuan agen baru.</p>
     </div>
 

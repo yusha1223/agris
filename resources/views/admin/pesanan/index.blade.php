@@ -3,11 +3,11 @@
 @section('title', 'Manajemen Transaksi - Admin AGRIS')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-2 pb-10 px-4 md:px-0">
+<div class="max-w-7xl mx-auto pt-2 pb-10">
 
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4" data-aos="fade-up">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Daftar Transaksi</h1>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Daftar Transaksi</h1>
             <p class="text-gray-500 text-sm">Kelola pesanan, pengiriman, dan status pembayaran pelanggan</p>
         </div>
     </div>

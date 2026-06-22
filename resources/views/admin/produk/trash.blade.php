@@ -4,17 +4,17 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto pt-3 pb-10">
-    <div class="flex items-center gap-4 mb-8 px-4 md:px-0" data-aos="fade-up">
+    <div class="flex items-center gap-4 mb-8" data-aos="fade-up">
         <a href="{{ route('admin.produk.index') }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition shadow-sm shrink-0">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
         <div>
-            <h1 class="text-2xl font-extrabold text-gray-800">Stok Kosong</h1>
+            <h1 class="text-xl md:text-2xl font-extrabold text-gray-800">Stok Kosong</h1>
             <p class="text-gray-500 text-sm">Daftar benih kosong</p>
         </div>
     </div>
 
-    <div class="bg-white md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden mx-4 md:mx-0" data-aos="fade-up" data-aos-delay="100">
+    <div class="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
         <div class="hidden md:block">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-50 text-gray-500 text-[10px] font-bold uppercase tracking-wider">

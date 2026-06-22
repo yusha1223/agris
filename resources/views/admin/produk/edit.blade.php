@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto pt-4 pb-12">
-    <div class="flex items-center gap-4 mb-6 px-4 md:px-0" data-aos="fade-up">
+    <div class="flex items-center gap-4 mb-6" data-aos="fade-up">
         <div>
             <h1 class="text-xl font-bold text-gray-800">Edit Data Produk</h1>
             <p class="text-xs text-gray-500">Mengubah varietas <span class="text-[#58CC02] font-semibold">{{ $produk->namaProduk }}</span></p>
@@ -14,7 +14,7 @@
     <form action="{{ route('admin.produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data" id="formProduk">
         @csrf
         @method('PUT')
-        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden mx-4 md:mx-0 shadow-sm" data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm" data-aos="fade-up" data-aos-delay="100">
             <div class="flex flex-col lg:flex-row">
                 <div class="lg:w-1/3 bg-gray-50 p-8 border-b lg:border-b-0 lg:border-r border-gray-200">
                     <div class="flex flex-col items-center">
@@ -125,10 +125,10 @@
                     </div>
 
                     <div class="mt-8 flex gap-3">
-                        <button type="button" onclick="openModal('modalUpdateProduk')" class="flex-2 bg-[#58CC02] text-white px-6 py-3.5 rounded-xl font-bold active:bg-[#46a302] transition shadow-sm">
+                        <button type="button" onclick="openModal('modalUpdateProduk')" class="flex-1 sm:flex-none sm:px-8 bg-[#58CC02] text-white py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-bold active:bg-[#46a302] transition shadow-sm">
                             Simpan
                         </button>
-                        <a href="{{ route('admin.produk.index') }}" class="flex-1 bg-gray-100 text-center text-gray-600 py-3.5 rounded-xl font-bold hover:bg-gray-200 transition">
+                        <a href="{{ route('admin.produk.index') }}" class="flex-1 sm:flex-none sm:px-8 bg-gray-100 text-center text-gray-600 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-bold hover:bg-gray-200 transition">
                             Batal
                         </a>
                     </div>

@@ -3,17 +3,17 @@
 @section('title', 'Manajemen Produk - AGRIS')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-2 pb-10 px-4 md:px-0">
+<div class="max-w-7xl mx-auto pt-2 pb-10">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4" data-aos="fade-up">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Daftar Produk</h1>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Daftar Produk</h1>
             <p class="text-gray-500 text-sm">Kelola stok berdasarkan inputan kategori admin</p>
         </div>
         <div class="flex gap-2 sm:gap-3">
-            <a href="{{ route('admin.produk.trash') }}" class="flex-1 md:flex-none justify-center bg-white shadow hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl transition font-bold text-sm flex items-center">
+            <a href="{{ route('admin.produk.trash') }}" class="flex-1 md:flex-none justify-center bg-white shadow hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl transition font-bold text-xs md:text-sm flex items-center">
                 Stok Habis
             </a>
-            <a href="{{ route('admin.produk.create') }}" class="flex-1 md:flex-none justify-center bg-[#58CC02] hover:bg-[#46a302] text-white px-5 py-2.5 rounded-xl transition shadow-md font-bold text-sm flex items-center">
+            <a href="{{ route('admin.produk.create') }}" class="flex-1 md:flex-none justify-center bg-[#58CC02] hover:bg-[#46a302] text-white px-5 py-2.5 rounded-xl transition shadow-md font-bold text-xs md:text-sm flex items-center">
                 <i class="fa-solid fa-plus mr-2"></i> Tambah
             </a>
         </div>

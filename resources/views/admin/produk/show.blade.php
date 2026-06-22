@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto pt-4 pb-12">
-    <div class="flex items-center justify-between mb-6 px-4 md:px-0" data-aos="fade-up">
+    <div class="flex items-center justify-between mb-6" data-aos="fade-up">
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.produk.index') }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition shadow-sm">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h1 class="text-xl font-bold text-gray-800">Detail Produk</h1>
+            <h1 class="text-lg md:text-xl font-bold text-gray-800">Detail Produk</h1>
         </div>
 
         <span class="{{ $item->stok > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }} px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
@@ -17,7 +17,7 @@
         </span>
     </div>
 
-    <div class="bg-white rounded-3xl border border-gray-200 overflow-hidden mx-4 md:mx-0 shadow-sm" data-aos="fade-up" data-aos-delay="100">
+    <div class="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm" data-aos="fade-up" data-aos-delay="100">
         <div class="flex flex-col lg:flex-row">
             <div class="lg:w-2/5 bg-gray-50 p-4 md:p-8 flex flex-col items-center justify-start border-b lg:border-b-0 lg:border-r border-gray-100" data-aos="fade-right" data-aos-delay="200">
                 <div class="w-full rounded-2xl overflow-hidden bg-white">
@@ -45,10 +45,10 @@
                     </span>
                 </div>
 
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ $item->namaProduk }}</h2>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">{{ $item->namaProduk }}</h2>
 
                 <div class="flex items-baseline gap-1 mb-8">
-                    <span class="text-3xl font-bold text-[#58CC02]">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+                    <span class="text-2xl md:text-3xl font-bold text-[#58CC02]">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
                     <span class="text-gray-400 font-medium">/ Karung</span>
                 </div>
 
@@ -74,12 +74,12 @@
                     </p>
                 </div>
 
-                <div class="flex gap-3">
-                    <a href="{{ route('admin.produk.edit', $item->id) }}" class="flex-1 py-3 flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition shadow-sm">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{{ route('admin.produk.edit', $item->id) }}" class="flex-1 py-2.5 md:py-3 flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold transition shadow-sm">
                         <i class="fa-solid fa-pen-to-square mr-2"></i> Ubah data produk
                     </a>
 
-                    <button type="button" onclick="openModal('modalHapus')" class="px-6 py-3 flex items-center justify-center rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-bold transition border border-red-100 shadow-sm">
+                    <button type="button" onclick="openModal('modalHapus')" class="px-5 md:px-6 py-2.5 md:py-3 flex items-center justify-center rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white text-xs md:text-sm font-bold transition border border-red-100 shadow-sm">
                         <i class="fa-solid fa-trash-can mr-2"></i> Hapus
                     </button>
                 </div>

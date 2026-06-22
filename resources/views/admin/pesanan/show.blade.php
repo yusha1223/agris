@@ -35,7 +35,7 @@
             <a href="{{ route('admin.pesanan.index') }}" class="inline-flex items-center gap-1 text-[10px] md:text-xs font-bold text-gray-400 hover:text-gray-600 transition uppercase tracking-wider mb-2">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Transaksi
             </a>
-            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-950 tracking-tight">Detail Pesanan</h1>
+            <h1 class="text-xl md:text-2xl font-extrabold text-gray-950 tracking-tight">Detail Pesanan</h1>
         </div>
         <div>
             <span class="text-[10px] md:text-xs text-gray-400 font-bold">Tanggal: {{ \Carbon\Carbon::parse($pesanan->created_at)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y H:i') }} WIB</span>

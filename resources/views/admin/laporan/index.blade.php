@@ -3,10 +3,10 @@
 @section('title', 'Laporan Keuangan - Admin AGRIS')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-5 pb-12 px-4 sm:px-6">
+<div class="max-w-7xl mx-auto pt-3 md:pt-5 pb-12">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8" data-aos="fade-up">
         <div>
-            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Laporan Keuangan</h1>
+            <h1 class="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight">Laporan Keuangan</h1>
             <p class="text-gray-500 text-xs md:text-sm mt-1">Pantau ringkasan pemasukan dan pengeluaran transaksi secara real-time</p>
         </div>
     </div>

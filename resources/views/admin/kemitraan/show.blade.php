@@ -3,14 +3,14 @@
 @section('title', 'Detail Kemitraan - AGRIS')
 
 @section('content')
-<div class="max-w-5xl mx-auto pt-4 pb-12 px-4">
+<div class="max-w-5xl mx-auto pt-4 pb-12">
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4" data-aos="fade-up">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.kemitraan.index') }}" class="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition shadow-sm">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div>
-                <h1 class="text-xl md:text-2xl font-bold text-gray-800">Detail Kemitraan Agen</h1>
+                <h1 class="text-lg md:text-xl font-bold text-gray-800">Detail Kemitraan Agen</h1>
                 <p class="text-gray-500 text-xs md:text-sm">Validasi dokumen MOU untuk mengaktifkan status mitra.</p>
             </div>
         </div>
@@ -19,7 +19,7 @@
         <form id="formHentikan" action="{{ route('admin.kemitraan.action', $kemitraan->id) }}" method="POST">
             @csrf
             <input type="hidden" name="action" value="hentikan">
-            <button type="button" onclick="triggerModal('modalHentikan')" class="w-full md:w-auto px-6 py-2.5 bg-red-500 text-white font-bold rounded-xl border border-red-100 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 text-sm">
+            <button type="button" onclick="triggerModal('modalHentikan')" class="w-full md:w-auto px-6 py-2.5 bg-red-500 text-white font-bold rounded-xl border border-red-100 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 text-xs md:text-sm">
                 Hapus Kemitraan
             </button>
         </form>
@@ -131,21 +131,21 @@
 
                         <div class="space-y-3">
                             @if($kemitraan->statusPengajuan == 'Menunggu Verifikasi MOU')
-                                <form id="formAktifkan" action="{{ route('admin.kemitraan.verifyMou', $kemitraan->id) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="status" value="Aktif">
-                                    <button type="button" onclick="triggerModal('modalAktifkan')" class="w-full py-3.5 bg-[#58CC02] text-white font-bold rounded-xl shadow-lg shadow-green-100 hover:bg-[#46a302] transition-all uppercase text-xs tracking-widest cursor-pointer border-none">
-                                        Setujui Pengajuan
-                                    </button>
-                                </form>
+                                 <form id="formAktifkan" action="{{ route('admin.kemitraan.verifyMou', $kemitraan->id) }}" method="POST">
+                                     @csrf
+                                     <input type="hidden" name="status" value="Aktif">
+                                     <button type="button" onclick="triggerModal('modalAktifkan')" class="w-full py-2.5 md:py-3.5 bg-[#58CC02] text-white font-bold rounded-xl shadow-lg shadow-green-100 hover:bg-[#46a302] transition-all uppercase text-[10px] md:text-xs tracking-widest cursor-pointer border-none">
+                                         Setujui Pengajuan
+                                     </button>
+                                 </form>
 
-                                <form id="formTolakMou" action="{{ route('admin.kemitraan.verifyMou', $kemitraan->id) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="status" value="Ditolak">
-                                    <button type="button" onclick="triggerModal('modalTolakMou')" class="w-full py-3.5 bg-white text-red-600 border border-red-100 font-bold rounded-xl hover:bg-red-50 transition-all uppercase text-xs tracking-widest cursor-pointer">
-                                        Tolak Pengajuan
-                                    </button>
-                                </form>
+                                 <form id="formTolakMou" action="{{ route('admin.kemitraan.verifyMou', $kemitraan->id) }}" method="POST">
+                                     @csrf
+                                     <input type="hidden" name="status" value="Ditolak">
+                                     <button type="button" onclick="triggerModal('modalTolakMou')" class="w-full py-2.5 md:py-3.5 bg-white text-red-600 border border-red-100 font-bold rounded-xl hover:bg-red-50 transition-all uppercase text-[10px] md:text-xs tracking-widest cursor-pointer">
+                                         Tolak Pengajuan
+                                     </button>
+                                 </form>
                             @endif
 
                             @if($kemitraan->statusPengajuan == 'Aktif')
