@@ -213,15 +213,18 @@ class c_pesanan extends Controller
         $request->validate([
             'origin_area_id' => 'required|string',
             'destination_area_id' => 'required|string',
-            'weight' => 'required|numeric|min:0.1',
+            'items' => 'required|array',
+            'items.*.name' => 'required|string',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.weight' => 'required|integer|min:1',
+            'items.*.value' => 'required|integer',
         ]);
 
         $originAreaId = $request->origin_area_id;
         $destinationAreaId = $request->destination_area_id;
-        $weightKg = (float) $request->weight;
-        $weightGrams = (int) ($weightKg * 1000);
+        $items = $request->items;
 
-        $cacheKey = 'biteship_rates_'.md5($originAreaId.'_'.$destinationAreaId.'_'.$weightGrams);
+        $cacheKey = 'biteship_rates_'.md5($originAreaId.'_'.$destinationAreaId.'_'.json_encode($items));
 
         if (Cache::has($cacheKey)) {
             $cachedRates = Cache::get($cacheKey);
@@ -240,14 +243,7 @@ class c_pesanan extends Controller
                     'origin_area_id' => $originAreaId,
                     'destination_area_id' => $destinationAreaId,
                     'couriers' => 'jne,sicepat,jnt,tiki,lion,ninja,anteraja',
-                    'items' => [
-                        [
-                            'name' => 'Produk AGRIS',
-                            'description' => 'Produk Agroindustri AGRIS',
-                            'value' => 0,
-                            'weight' => $weightGrams,
-                        ],
-                    ],
+                    'items' => $items,
                 ]);
 
             if ($response->successful()) {
@@ -316,11 +312,16 @@ class c_pesanan extends Controller
             }
             $destinationAreaId = $this->getOrCreateBiteshipArea(Auth::user()->desaId);
 
-            $totalWeight = 0;
+            $biteshipItems = [];
             foreach ($keranjangs as $item) {
-                $totalWeight += $item->produk->kategori->karung * $item->jumlah;
+                $biteshipItems[] = [
+                    'name' => $item->produk->namaProduk,
+                    'description' => 'Produk AGRIS',
+                    'value' => (int) $item->produk->harga,
+                    'quantity' => (int) $item->jumlah,
+                    'weight' => (int) ($item->produk->kategori->karung * 1000),
+                ];
             }
-            $weightGrams = (int) ($totalWeight * 1000);
 
             $apiKey = config('services.biteship.key');
             $baseUrl = $this->getBiteshipBaseUrl();
@@ -332,14 +333,7 @@ class c_pesanan extends Controller
                         'origin_area_id' => $originAreaId,
                         'destination_area_id' => $destinationAreaId,
                         'couriers' => strtolower($request->courier_name),
-                        'items' => [
-                            [
-                                'name' => 'Produk AGRIS',
-                                'description' => 'Produk Agroindustri AGRIS',
-                                'value' => 0,
-                                'weight' => $weightGrams,
-                            ],
-                        ],
+                        'items' => $biteshipItems,
                     ]);
 
                 if ($response->successful()) {

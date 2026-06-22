@@ -26,15 +26,15 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm">
                 <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
                     <i class="fa-solid fa-basket-shopping text-slate-400 text-lg"></i>
                     <h2 class="font-extrabold text-slate-800 text-sm">Daftar Produk</h2>
                 </div>
                 <div class="divide-y divide-slate-100">
                     @foreach($keranjangs as $item)
-                        <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
-                            <div class="w-14 h-14 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 flex items-center justify-center p-1 shrink-0">
+                        <div class="flex items-center gap-3 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 flex items-center justify-center p-1 shrink-0">
                                 @if($item->produk->fotoProduk)
                                     <img src="{{ asset('storage/' . $item->produk->fotoProduk) }}" class="w-full h-full object-cover rounded-lg shadow-xs">
                                 @else
@@ -57,8 +57,8 @@
                 </div>
             </div>
 
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm transition-all duration-300">
-                <div class="flex items-center gap-3.5 mb-8 pb-4 border-b border-slate-100">
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm transition-all duration-300">
+                <div class="flex items-center gap-3 mb-8 pb-4 border-b border-slate-100">
                     <div class="w-10 h-10 rounded-2xl bg-[#58CC02]/10 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-truck-fast text-lg text-[#58CC02]"></i>
                     </div>
@@ -69,9 +69,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                    <label for="type_kirim" class="relative flex flex-col p-5 rounded-2xl border-2 border-[#58CC02] bg-[#58CC02]/5 cursor-pointer transition-all duration-300 shadow-xs hover:shadow-sm" id="card_type_kirim">
+                    <label for="type_kirim" class="relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 border-[#58CC02] bg-[#58CC02]/5 cursor-pointer transition-all duration-300 shadow-xs hover:shadow-sm" id="card_type_kirim">
                         <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-2.5">
+                            <div class="flex items-center gap-2">
                                 <span class="w-8 h-8 rounded-xl bg-[#58CC02]/10 flex items-center justify-center text-[#58CC02]">
                                     <i class="fa-solid fa-truck-ramp-box"></i>
                                 </span>
@@ -82,9 +82,9 @@
                         <span class="text-xs text-slate-500 leading-relaxed font-medium">Paket dikirim langsung ke alamat terdaftar Anda menggunakan kurir ekspedisi terintegrasi.</span>
                     </label>
 
-                    <label for="type_ambil" class="relative flex flex-col p-5 rounded-2xl border-2 border-slate-100 cursor-pointer transition-all duration-300 shadow-xs hover:border-slate-300 hover:shadow-sm" id="card_type_ambil">
+                    <label for="type_ambil" class="relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 border-slate-100 cursor-pointer transition-all duration-300 shadow-xs hover:border-slate-300 hover:shadow-sm" id="card_type_ambil">
                         <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center gap-2.5">
+                            <div class="flex items-center gap-2">
                                 <span class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
                                     <i class="fa-solid fa-warehouse"></i>
                                 </span>
@@ -97,7 +97,7 @@
                 </div>
 
                 <div id="address_section" class="space-y-6">
-                    <div class="bg-slate-50/50 p-5 rounded-2xl border border-slate-100 flex items-start gap-4">
+                    <div class="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-100 flex items-start gap-3 sm:gap-4">
                         <div class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-[#58CC02] shrink-0 mt-0.5">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
 
-                <div id="pickup_section" class="hidden bg-slate-50/50 p-6 rounded-2xl border border-slate-100 flex items-start gap-4">
+                <div id="pickup_section" class="hidden bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-100 flex items-start gap-3 sm:gap-4">
                     <div class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-[#58CC02] shrink-0 mt-0.5">
                         <i class="fa-solid fa-warehouse text-base"></i>
                     </div>
@@ -143,8 +143,8 @@
                 </div>
             </div>
 
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
-                <div class="flex items-center gap-3.5 mb-8 pb-4 border-b border-slate-100">
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm">
+                <div class="flex items-center gap-3 mb-8 pb-4 border-b border-slate-100">
                     <div class="w-10 h-10 rounded-2xl bg-[#58CC02]/10 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-credit-card text-base text-[#58CC02]"></i>
                     </div>
@@ -154,12 +154,12 @@
                     </div>
                 </div>
 
-                <div class="relative overflow-hidden flex items-center p-5 rounded-2xl border-2 border-[#58CC02] bg-linear-to-r from-green-50/20 to-emerald-50/10 cursor-default shadow-xs">
+                <div class="relative overflow-hidden flex items-center p-4 sm:p-5 rounded-2xl border-2 border-[#58CC02] bg-linear-to-r from-green-50/20 to-emerald-50/10 cursor-default shadow-xs">
                     <div class="absolute -right-8 -bottom-8 w-24 h-24 text-green-200/20 pointer-events-none">
                         <i class="fa-solid fa-shield-halved text-7xl"></i>
                     </div>
 
-                    <div class="grow flex items-center gap-4 relative z-10">
+                    <div class="grow flex items-center gap-3 sm:gap-4 relative z-10">
                         <div class="w-12 h-12 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-xs shrink-0 font-extrabold text-[#0f8629]">
                             <i class="fa-solid fa-shield-halved text-2xl text-[#58CC02]"></i>
                         </div>
@@ -173,7 +173,7 @@
         </div>
 
         <div class="sticky top-28 space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-[#58CC02]/10 to-transparent rounded-bl-full pointer-events-none"></div>
 
                 <h2 class="font-bold text-slate-800 text-sm mb-6 pb-4 border-b border-slate-100 uppercase tracking-wider">Ringkasan Belanja</h2>
@@ -224,8 +224,18 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const originAreaId = @js($originAreaId);
     const destinationAreaId = @js($destinationAreaId);
-    const weight = @js($totalWeight);
     const itemTotal = @js($totalPrice);
+    const biteshipItems = [
+        @foreach($keranjangs as $item)
+        {
+            name: @js($item->produk->namaProduk),
+            description: "Produk AGRIS",
+            value: @js((int) $item->produk->harga),
+            quantity: @js((int) $item->jumlah),
+            weight: @js((int) ($item->produk->kategori->karung * 1000))
+        },
+        @endforeach
+    ];
 
     const loadingEl = document.getElementById('shipping-loading');
     const errorEl = document.getElementById('shipping-error');
@@ -268,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 body: JSON.stringify({
                     origin_area_id: originAreaId,
                     destination_area_id: destinationAreaId,
-                    weight: weight
+                    items: biteshipItems
                 })
             });
 
@@ -296,7 +306,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     }
 
                     const card = document.createElement('div');
-                    card.className = "courier-card relative flex flex-col p-5 rounded-2xl border-2 border-slate-100 bg-white cursor-pointer transition-all duration-300 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-xs";
+                    card.className = "courier-card relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 border-slate-100 bg-white cursor-pointer transition-all duration-300 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-xs";
                     card.innerHTML = `
                         <div class="flex items-center justify-between mb-3">
                             <span class="px-2.5 py-0.5 rounded-lg text-[9px] font-bold tracking-wider text-white ${badgeBg} uppercase">${rate.courier_name}</span>
@@ -315,11 +325,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                     card.addEventListener('click', function() {
                         document.querySelectorAll('.courier-card').forEach(c => {
-                            c.className = "courier-card relative flex flex-col p-5 rounded-2xl border-2 border-slate-100 bg-white cursor-pointer transition-all duration-300 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-xs";
+                            c.className = "courier-card relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 border-slate-100 bg-white cursor-pointer transition-all duration-300 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-xs";
                             c.querySelector('.select-check-icon').classList.add('hidden');
                         });
 
-                        card.className = "courier-card relative flex flex-col p-5 rounded-2xl border-2 border-[#58CC02] bg-[#58CC02]/5 scale-[1.02] shadow-xs cursor-pointer transition-all duration-300";
+                        card.className = "courier-card relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 border-[#58CC02] bg-[#58CC02]/5 scale-[1.02] shadow-xs cursor-pointer transition-all duration-300";
                         card.querySelector('.select-check-icon').classList.remove('hidden');
 
                         selectedRateIndex = index;
