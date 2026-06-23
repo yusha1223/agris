@@ -1253,6 +1253,8 @@ class c_pesanan extends Controller
                     }
                 }
 
+                // Refresh model agar status terbaru yang di-broadcast ke frontend
+                $pesanan->refresh();
                 event(new OrderStatusUpdated($pesanan));
                 Log::info("Biteship Webhook: Order {$pesanan->id} status updated to {$status}. Broadcasted OrderStatusUpdated event.");
             }

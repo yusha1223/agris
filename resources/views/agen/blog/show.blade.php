@@ -31,7 +31,7 @@
 
             <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-8">{{ $blog->judulBlog }}</h1>
 
-            <div class="prose prose-sm md:prose-base prose-green max-w-none text-gray-600 leading-relaxed">
+            <div class="prose prose-sm md:prose-base prose-green max-w-none text-gray-600 leading-relaxed text-justify">
                 @php
                     $urlPattern = '/(https?:\/\/[^\s]+)/';
                     $contentWithLinks = preg_replace(
