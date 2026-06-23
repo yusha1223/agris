@@ -3,25 +3,18 @@
     iframe[id*="chatbase"],
     #chatbase-bubble-button,
     #chatbase-bubble-window {
-        z-index: 40 !important;
+        /* Desktop: di atas navbar (z-55), di bawah dropdown (z-60) */
+        z-index: 56 !important;
     }
 
-    #chatbase-bubble-window {
-        width: 448px !important;
-        height: 650px !important;
-        max-width: 90vw !important;
-        max-height: 85vh !important;
-        min-width: unset !important;
-        min-height: unset !important;
-        transform: none !important;
-        scale: unset !important;
-    }
-
-    #chatbase-bubble-window iframe {
-        width: 100% !important;
-        height: 100% !important;
-        transform: none !important;
-        scale: unset !important;
+    /* Mobile: di atas overlay sidebar (z-40), tapi di belakang sidebar (z-45) */
+    @media (max-width: 767px) {
+        iframe[src*="chatbase.co"],
+        iframe[id*="chatbase"],
+        #chatbase-bubble-button,
+        #chatbase-bubble-window {
+            z-index: 44 !important;
+        }
     }
 </style>
 <script>
