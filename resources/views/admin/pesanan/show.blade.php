@@ -582,7 +582,11 @@
                         @elseif($pesanan->status_pesanan === 'diproses')
                             <span class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-1 rounded-xl text-[10px] md:text-xs font-black uppercase">Dikemas</span>
                         @elseif($pesanan->status_pesanan === 'dikirim')
-                            <span class="bg-purple-50 text-purple-600 border border-purple-200 px-3 py-1 rounded-xl text-[10px] md:text-xs font-black uppercase">Dikirim</span>
+                            @if($isPickup)
+                                <span class="bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 rounded-xl text-[10px] md:text-xs font-black uppercase">Siap Diambil</span>
+                            @else
+                                <span class="bg-purple-50 text-purple-600 border border-purple-200 px-3 py-1 rounded-xl text-[10px] md:text-xs font-black uppercase">Dikirim</span>
+                            @endif
                         @elseif($pesanan->status_pesanan === 'selesai')
                             <span class="bg-green-50 text-green-600 border border-green-200 px-3 py-1 rounded-xl text-[10px] md:text-xs font-black uppercase">Selesai</span>
                         @else
@@ -657,10 +661,14 @@
 
                     @elseif($pesanan->status_pesanan === 'dikirim')
 
-                        <div class="text-center py-6 bg-purple-50 border border-purple-100 rounded-2xl">
-                            <i class="fa-solid fa-truck text-purple-500 text-3xl mb-2"></i>
-                            <h4 class="font-extrabold text-purple-800 text-[10px] md:text-xs uppercase tracking-wider">Proses Pengambilan / Pengiriman</h4>
-                            <p class="text-[9px] md:text-[10px] text-purple-700 mt-1 leading-normal px-4 font-bold">Pesanan dalam proses. Pantau status pengiriman</p>
+                        <div class="text-center py-6 {{ $isPickup ? 'bg-orange-50 border-orange-100' : 'bg-purple-50 border-purple-100' }} border rounded-2xl">
+                            <i class="fa-solid {{ $isPickup ? 'fa-warehouse text-orange-500' : 'fa-truck text-purple-500' }} text-3xl mb-2"></i>
+                            <h4 class="font-extrabold {{ $isPickup ? 'text-orange-800' : 'text-purple-800' }} text-[10px] md:text-xs uppercase tracking-wider">
+                                {{ $isPickup ? 'Menunggu Pengambilan' : 'Proses Pengiriman' }}
+                            </h4>
+                            <p class="text-[9px] md:text-[10px] {{ $isPickup ? 'text-orange-700' : 'text-purple-700' }} mt-1 leading-normal px-4 font-bold">
+                                {{ $isPickup ? 'Barang siap diambil di Gudang Utama AGRIS. Menunggu agen datang mengambil.' : 'Pesanan dalam proses pengiriman. Pantau status pengiriman.' }}
+                            </p>
                         </div>
 
                     @elseif($pesanan->status_pesanan === 'selesai')

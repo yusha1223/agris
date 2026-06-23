@@ -80,7 +80,12 @@
                                 @if($pesanan->status_pesanan === 'diproses')
                                     <span class="bg-blue-50 text-blue-600 border border-blue-100 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Dikemas</span>
                                 @elseif($pesanan->status_pesanan === 'dikirim')
-                                    <span class="bg-[#58CC02]/5 text-[#58CC02] border border-[#58CC02]/20 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Dikirim</span>
+                                    @php $isPickupOrder = str_contains(strtolower($pesanan->deskripsi ?? ''), 'ambil'); @endphp
+                                    @if($isPickupOrder)
+                                        <span class="bg-orange-50 text-orange-600 border border-orange-100 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Siap Diambil</span>
+                                    @else
+                                        <span class="bg-[#58CC02]/5 text-[#58CC02] border border-[#58CC02]/20 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Dikirim</span>
+                                    @endif
                                 @elseif($pesanan->status_pesanan === 'selesai')
                                     <span class="bg-green-50 text-green-600 border border-green-100 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Selesai</span>
                                 @else

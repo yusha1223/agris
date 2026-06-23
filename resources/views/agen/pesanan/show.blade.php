@@ -127,7 +127,11 @@
             @elseif($pesanan->status === 'diproses')
                 <span class="bg-blue-50 text-blue-600 border border-blue-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Sedang Dikemas</span>
             @elseif($pesanan->status === 'dikirim')
-                <span class="bg-purple-50 text-purple-600 border border-purple-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Sedang Dikirim</span>
+                @if($isPickup)
+                    <span class="bg-orange-50 text-orange-600 border border-orange-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Siap Diambil</span>
+                @else
+                    <span class="bg-purple-50 text-purple-600 border border-purple-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Sedang Dikirim</span>
+                @endif
             @elseif($pesanan->status === 'selesai')
                 <span class="bg-green-50 text-green-600 border border-green-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider" data-order-finished="true">Selesai</span>
             @else
@@ -614,7 +618,7 @@
             @if($canConfirmReceipt)
                 <div class="bg-white p-6 rounded-3xl shadow-sm space-y-3">
                     <h3 class="font-extrabold text-gray-800 text-xs mb-4 uppercase tracking-wider text-gray-400 pb-2 border-b border-gray-50">Konfirmasi Penerimaan</h3>
-                    <p class="text-xs text-gray-400 font-semibold leading-relaxed">Pesanan Anda telah dikirimkan. Harap klik tombol di bawah ini jika barang sudah Anda terima dengan baik.</p>
+                    <p class="text-xs text-gray-400 font-semibold leading-relaxed">{{ $isPickup ? 'Barang siap di ambil di gudang. Harap klik tombol di bawah ini jika barang sudah Anda ambil.' : 'Pesanan Anda telah dikirimkan. Harap klik tombol di bawah ini jika barang sudah Anda terima dengan baik.' }}</p>
 
                     <form id="formDiterima" action="{{ route('agen.pesanan.diterima', $pesanan->id) }}" method="POST">
                         @csrf

@@ -120,7 +120,12 @@
                                 @elseif($pesanan->status_pesanan === 'diproses')
                                     <span class="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-black tracking-wide whitespace-nowrap">Dikemas</span>
                                 @elseif($pesanan->status_pesanan === 'dikirim')
-                                    <span class="bg-purple-50 text-purple-600 border border-purple-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-black tracking-wide whitespace-nowrap">Dikirim</span>
+                                    @php $isPickupOrder = str_contains(strtolower($pesanan->deskripsi ?? ''), 'ambil'); @endphp
+                                    @if($isPickupOrder)
+                                        <span class="bg-orange-50 text-orange-600 border border-orange-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-black tracking-wide whitespace-nowrap">Siap Diambil</span>
+                                    @else
+                                        <span class="bg-purple-50 text-purple-600 border border-purple-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-black tracking-wide whitespace-nowrap">Dikirim</span>
+                                    @endif
                                 @elseif($pesanan->status_pesanan === 'selesai')
                                     <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-black tracking-wide whitespace-nowrap">Selesai</span>
                                 @else
@@ -208,7 +213,12 @@
                                 @elseif($pesanan->status_pesanan === 'diproses')
                                     <span class="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-black tracking-wide">Dikemas</span>
                                 @elseif($pesanan->status_pesanan === 'dikirim')
-                                    <span class="bg-purple-50 text-purple-600 border border-purple-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-black tracking-wide">Dikirim</span>
+                                    @php $isPickupOrder = str_contains(strtolower($pesanan->deskripsi ?? ''), 'ambil'); @endphp
+                                    @if($isPickupOrder)
+                                        <span class="bg-orange-50 text-orange-600 border border-orange-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-black tracking-wide">Siap Diambil</span>
+                                    @else
+                                        <span class="bg-purple-50 text-purple-600 border border-purple-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-black tracking-wide">Dikirim</span>
+                                    @endif
                                 @elseif($pesanan->status_pesanan === 'selesai')
                                     <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-black tracking-wide">Selesai</span>
                                 @else
