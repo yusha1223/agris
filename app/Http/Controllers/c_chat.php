@@ -16,7 +16,14 @@ class c_chat extends Controller
         $user = Auth::user();
         if ($user->isAdmin) {
             $users = User::isAdmin(false)->get();
-            return view('admin.chat.index', compact('users'));
+
+            $unreadUserIds = Chat::where('id_penerima', $user->id)
+                ->where('status', 'terkirim')
+                ->distinct()
+                ->pluck('id_pengirim')
+                ->toArray();
+
+            return view('admin.chat.index', compact('users', 'unreadUserIds'));
         }
 
         $admin = User::isAdmin(true)->first();

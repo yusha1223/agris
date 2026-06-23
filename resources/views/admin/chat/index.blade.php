@@ -147,7 +147,7 @@
             const imagePreview = ref(false);
             const activeMenu = ref(null);
             const searchQuery = ref('');
-            const unreadUsers = ref([]);
+            const unreadUsers = ref(@js($unreadUserIds ?? []));
 
             const parseDate = (t) => {
                 if (!t) return new Date();
