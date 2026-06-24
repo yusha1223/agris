@@ -175,7 +175,14 @@ document.addEventListener('DOMContentLoaded', function() {
     el.dropdownBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
         const isHidden = el.dropdownMenu.classList.contains('hidden');
-        if (isHidden) animateToggle(el.mobileMenu, false);
+        if (isHidden) {
+            animateToggle(el.mobileMenu, false);
+            const nav = document.querySelector('nav');
+            if (nav) {
+                nav.classList.remove('z-[60]');
+                nav.classList.add('z-55');
+            }
+        }
         animateToggle(el.dropdownMenu, isHidden);
         if (el.dropdownArrow) el.dropdownArrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
     });
@@ -185,6 +192,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const isHidden = el.mobileMenu.classList.contains('hidden');
         if (isHidden) animateToggle(el.dropdownMenu, false);
         animateToggle(el.mobileMenu, isHidden);
+
+        const nav = el.hamburger.closest('nav');
+        if (nav) {
+            if (isHidden) {
+                nav.classList.add('z-[60]');
+                nav.classList.remove('z-55');
+            } else {
+                nav.classList.remove('z-[60]');
+                nav.classList.add('z-55');
+            }
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -192,7 +210,14 @@ document.addEventListener('DOMContentLoaded', function() {
             animateToggle(el.dropdownMenu, false);
             if (el.dropdownArrow) el.dropdownArrow.style.transform = 'rotate(0deg)';
         }
-        if (!e.target.closest('#hamburger') && !e.target.closest('#mobileMenu')) animateToggle(el.mobileMenu, false);
+        if (!e.target.closest('#hamburger') && !e.target.closest('#mobileMenu')) {
+            animateToggle(el.mobileMenu, false);
+            const nav = document.querySelector('nav');
+            if (nav) {
+                nav.classList.remove('z-[60]');
+                nav.classList.add('z-55');
+            }
+        }
     });
 
     if (window.Echo) {

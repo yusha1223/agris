@@ -7,13 +7,22 @@
         z-index: 56 !important;
     }
 
-    /* Mobile: di atas overlay sidebar (z-40), tapi di belakang sidebar (z-45) */
+    /* Mobile: di depan navbar (z-55), tapi di belakang sidebar (z-60) */
     @media (max-width: 767px) {
         iframe[src*="chatbase.co"],
         iframe[id*="chatbase"],
         #chatbase-bubble-button,
         #chatbase-bubble-window {
-            z-index: 44 !important;
+            z-index: 56 !important;
+        }
+
+        /* Memberikan jarak dengan navbar saat bubble window dibuka */
+        #chatbase-bubble-window,
+        iframe[id*="chatbase-bubble-window"],
+        iframe[src*="chatbase.co"][id*="bubble-window"] {
+            top: 76px !important;
+            height: calc(100% - 76px) !important;
+            max-height: calc(100vh - 76px) !important;
         }
     }
 </style>
