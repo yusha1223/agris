@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'AGRIS - Platform Agroindustri Terpercaya')</title>
     <meta name="description" content="@yield('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'agris, agroindustri, pertanian, pasar tani, hasil bumi, pertanian digital, petani indonesia, beli hasil tani')">
+    <meta name="keywords" content="@yield('meta_keywords', 'agris benih, agroindustri, pertanian, pasar tani, hasil bumi, pertanian digital, petani indonesia, beli hasil tani')">
     <meta name="author" content="AGRIS">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="@yield('canonical_url', request()->url())">
@@ -20,7 +20,6 @@
     <meta property="og:image" content="@yield('meta_image', asset('images/icon.svg'))">
     <meta property="og:site_name" content="AGRIS">
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="@yield('canonical_url', request()->url())">
     <meta property="twitter:title" content="@yield('title', 'AGRIS - Platform Agroindustri Terpercaya')">
