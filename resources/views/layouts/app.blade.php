@@ -5,7 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Agris')</title>
+    <title>@yield('title', 'AGRIS - Platform Agroindustri Terpercaya')</title>
+    <meta name="description" content="@yield('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'agris, agroindustri, pertanian, pasar tani, hasil bumi, pertanian digital, petani indonesia, beli hasil tani')">
+    <meta name="author" content="AGRIS">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="@yield('canonical_url', request()->url())">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="@yield('canonical_url', request()->url())">
+    <meta property="og:title" content="@yield('title', 'AGRIS - Platform Agroindustri Terpercaya')">
+    <meta property="og:description" content="@yield('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.')">
+    <meta property="og:image" content="@yield('meta_image', asset('images/icon.svg'))">
+    <meta property="og:site_name" content="AGRIS">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="@yield('canonical_url', request()->url())">
+    <meta property="twitter:title" content="@yield('title', 'AGRIS - Platform Agroindustri Terpercaya')">
+    <meta property="twitter:description" content="@yield('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.')">
+    <meta property="twitter:image" content="@yield('meta_image', asset('images/icon.svg'))">
+
     <link rel="icon" type="image/png" href="{{ asset('images/icon.svg') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
