@@ -104,20 +104,19 @@
                             <div id="passwordSection" class="hidden mt-4 pt-4 border-t border-gray-100">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="relative">
-                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Password Lama</label>
-                                        <input type="password" name="current_password" id="current_password" class="form-input editable w-full rounded-xl border-[#58CC02] bg-white py-2 px-3 text-sm pr-10 transition-all font-medium" placeholder="Konfirmasi password lama">
-                                        <button type="button" class="toggle-password absolute right-3 top-8 text-gray-400 hover:text-[#58CC02]">
-                                            <i class="fas fa-eye text-sm"></i>
-                                        </button>
-                                        @error('current_password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                                    </div>
-                                    <div class="relative">
                                         <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Password Baru</label>
                                         <input type="password" name="password" id="password" class="form-input editable w-full rounded-xl border-[#58CC02] bg-white py-2 px-3 text-sm pr-10 transition-all font-medium" placeholder="Minimal 8 karakter">
                                         <button type="button" class="toggle-password absolute right-3 top-8 text-gray-400 hover:text-[#58CC02]">
                                             <i class="fas fa-eye text-sm"></i>
                                         </button>
                                         @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                                    </div>
+                                    <div class="relative">
+                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Konfirmasi Password Baru</label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-input editable w-full rounded-xl border-[#58CC02] bg-white py-2 px-3 text-sm pr-10 transition-all font-medium" placeholder="Konfirmasi password baru">
+                                        <button type="button" class="toggle-password absolute right-3 top-8 text-gray-400 hover:text-[#58CC02]">
+                                            <i class="fas fa-eye text-sm"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="text-[9px] text-gray-400 mt-2 italic">*Biarkan kosong jika tidak ingin mengubah password.</p>

@@ -42,8 +42,7 @@ class c_profile extends Controller
             'email'            => 'required|email|unique:users,email,' . $user->id,
             'detailAlamat'     => 'nullable|string',
             'fotoProfil'       => 'nullable|image|mimes:jpeg,png,jpg|max:10048',
-            'current_password' => 'required_with:password',
-            'password'         => 'nullable|min:8',
+            'password'         => 'nullable|min:8|confirmed',
             'desaId'           => 'nullable',
         ], [
             'required'                       => 'Data wajib diisi!',
@@ -51,16 +50,13 @@ class c_profile extends Controller
             'noTelp.unique'                  => 'Nomor Telpon sudah digunakan.',
             'noTelp.digits_between'          => 'Nomor telepon harus antara 4 sampai 15 digit.',
             'password.min'                   => 'Password baru minimal 8 karakter.',
-            'current_password.required_with' => 'Konfirmasi password lama wajib diisi.',
+            'password.confirmed'             => 'Konfirmasi password baru tidak cocok.',
             'fotoProfil.image'               => 'File harus berupa gambar.',
             'fotoProfil.mimes'               => 'Format gambar harus jpeg, png, atau jpg.',
             'fotoProfil.max'                 => 'Ukuran gambar maksimal 10MB.'
         ]);
 
         if ($request->filled('password')) {
-            if (!Hash::check($request->current_password, $user->password)) {
-                return redirect()->back()->withErrors(['current_password' => 'Password lama salah.'])->withInput();
-            }
             $user->password = Hash::make($request->password);
         }
 
