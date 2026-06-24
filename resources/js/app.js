@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         duration: 800,
         easing: 'ease-out-cubic',
         once: false,
-        mirror: true,
+        mirror: false,
         offset: 50,
     });
 
