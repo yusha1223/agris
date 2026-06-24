@@ -11,6 +11,7 @@
     <meta name="author" content="AGRIS">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="@yield('canonical_url', request()->url())">
+    <meta name="google-site-verification" content="googleab47259f04d99b96" />
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="@yield('canonical_url', request()->url())">
@@ -29,6 +30,37 @@
     <link rel="icon" type="image/png" href="{{ asset('images/icon.svg') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AGRIS",
+      "url": "{{ url('/') }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ url('/blog') }}?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AGRIS",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('images/icon.svg') }}",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+628123456789",
+        "contactType": "customer service",
+        "areaServed": "ID",
+        "availableLanguage": "Indonesian"
+      }
+    }
+    </script>
 </head>
 <body class="bg-gray-700 text-gray-800 scroll-smooth font-sans antialiased">
 

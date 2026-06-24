@@ -28,6 +28,12 @@ Route::get('/contact', function () {
 Route::get('/blog', [c_blog::class, 'indexGuest'])->name('guest.blog.index');
 Route::get('/blog/{id}', [c_blog::class, 'showGuest'])->name('guest.blog.show');
 
+Route::get('/sitemap.xml', function () {
+    $blogs = \App\Models\Blog::all();
+    return response()->view('guest.sitemap', compact('blogs'))
+        ->header('Content-Type', 'text/xml');
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
