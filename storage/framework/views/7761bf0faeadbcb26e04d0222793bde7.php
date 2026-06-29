@@ -5,10 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title><?php echo $__env->yieldContent('title', 'Agris'); ?></title>
+    <title><?php echo $__env->yieldContent('title', 'AGRIS - Platform Agroindustri Terpercaya'); ?></title>
+    <meta name="description" content="<?php echo $__env->yieldContent('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.'); ?>">
+    <meta name="keywords" content="<?php echo $__env->yieldContent('meta_keywords', 'agris benih, agroindustri, pertanian, pasar tani, hasil bumi, pertanian digital, petani indonesia, beli hasil tani'); ?>">
+    <meta name="author" content="AGRIS">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="<?php echo $__env->yieldContent('canonical_url', request()->url()); ?>">
+    <meta name="google-site-verification" content="googleab47259f04d99b96" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo $__env->yieldContent('canonical_url', request()->url()); ?>">
+    <meta property="og:title" content="<?php echo $__env->yieldContent('title', 'AGRIS - Platform Agroindustri Terpercaya'); ?>">
+    <meta property="og:description" content="<?php echo $__env->yieldContent('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.'); ?>">
+    <meta property="og:image" content="<?php echo $__env->yieldContent('meta_image', asset('images/icon.svg')); ?>">
+    <meta property="og:site_name" content="AGRIS">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo $__env->yieldContent('canonical_url', request()->url()); ?>">
+    <meta property="twitter:title" content="<?php echo $__env->yieldContent('title', 'AGRIS - Platform Agroindustri Terpercaya'); ?>">
+    <meta property="twitter:description" content="<?php echo $__env->yieldContent('meta_description', 'AGRIS adalah platform agroindustri modern yang menghubungkan produsen pertanian dengan konsumen secara langsung untuk mewujudkan keadilan pangan dan kemakmuran bersama.'); ?>">
+    <meta property="twitter:image" content="<?php echo $__env->yieldContent('meta_image', asset('images/icon.svg')); ?>">
+
     <link rel="icon" type="image/png" href="<?php echo e(asset('images/icon.svg')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AGRIS",
+      "url": "<?php echo e(url('/')); ?>",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "<?php echo e(url('/blog')); ?>?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AGRIS",
+      "url": "<?php echo e(url('/')); ?>",
+      "logo": "<?php echo e(asset('images/icon.svg')); ?>",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+628123456789",
+        "contactType": "customer service",
+        "areaServed": "ID",
+        "availableLanguage": "Indonesian"
+      }
+    }
+    </script>
 </head>
 <body class="bg-gray-700 text-gray-800 scroll-smooth font-sans antialiased">
 

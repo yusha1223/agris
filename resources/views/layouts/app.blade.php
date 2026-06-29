@@ -33,7 +33,7 @@
     <!-- JSON-LD Structured Data for SEO -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
+      "@@context": "https://schema.org",
       "@type": "WebSite",
       "name": "AGRIS",
       "url": "{{ url('/') }}",
@@ -46,7 +46,7 @@
     </script>
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
+      "@@context": "https://schema.org",
       "@type": "Organization",
       "name": "AGRIS",
       "url": "{{ url('/') }}",
